@@ -62,13 +62,14 @@ body header h1{
 
 .numeric{
   height: 25%;
+  padding-left: 2%;
   margin: 10px 15px 0 15px;
 }
 
 .numeric .entry{
-   width: 22%;
+   width: 24%;
    height: 100%;
-   margin: 0 10px 0 10px;
+   margin: 0 2px 0 2px;
    background: #aaa;
    float: left;
  }
