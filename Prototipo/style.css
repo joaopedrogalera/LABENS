@@ -1,0 +1,74 @@
+html, body{
+  padding: 0;
+  font-family: arial;
+}
+
+body header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #00bed7;
+  z-index: 999;
+  padding: 0;
+}
+
+body header h1{
+  color: #fff;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  margin-bottom: 0;
+  vertical-align: middle;
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  display: block;
+}
+
+.station{
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  height: 100%;
+  background: #ddd;
+  z-index: 900;
+}
+
+.screen {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background: #eee;
+}
+
+.content{
+  padding-left: 305px;
+  height: 100%;
+}
+
+.graph{
+  background-color: #ccc;
+  margin: 70px 15px 0 15px;
+  height: 60%;
+}
+
+.numeric{
+  height: 25%;
+  margin: 10px 15px 0 15px;
+}
+
+.numeric .entry{
+   width: 22%;
+   height: 100%;
+   margin: 0 10px 0 10px;
+   background: #aaa;
+   float: left;
+ }
