@@ -4,60 +4,84 @@
   <title>LABENS</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="static/css/bootstrap-table.css" />
+  <link rel="stylesheet" href="static/css/style.css" />
+  <meta http-equiv="refresh" content="30">
 </head>
 <body>
-  <header>
-    <h1>Câmpus</h1>
-  </header>
-  <aside class="station"></aside>
-  <section class="screen" id="s0" style="top: 000%;">
-    <div class="content">
-      <div class="graph">
+  <div class="lateral">
+    <header>
+      <div class="logo">
+        <img src="static/img/utfpr.png" alt="Logo UTFPR" title="UTFPR" />
+        <img src="static/img/copel.png" alt="Logo COPEL" title="COPEL" />
+        <img src="static/img/labens.png" alt="Logo LABENS" title="LABENS" />
       </div>
-      <div class="numeric">
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="screen" id="s1" style="top: 100%;">
-    <div class="content">
-      <div class="graph">
-      </div>
-      <div class="numeric">
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="screen" id="s2" style="top: 200%;">
-    <div class="content">
-      <div class="graph">
-      </div>
-      <div class="numeric">
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-        <div class="entry">
-        </div>
-      </div>
-    </div>
-  </section>
+      <h1>Câmpus Curitiba</h1>
+      <img class="campus" src="static/img/campi/ct.jpg" alt="Vista Usina Campus Curitiba" title="Vista Usina Campus Curitiba" />
+    </header>
+    <aside>
+      <h1>Estação SONDA</h1>
+      <h2>Dados Meteorológicos</h2>
+      <table class="table table-sm table-dark">
+        <tr>
+          <th scope="row">Temperatura Ambiente</td>
+          <td>30º C</td>
+        </tr>
+        <tr>
+          <th scope="row">Umidade Relativa do ar</td>
+          <td>80%</td>
+        </tr>
+        <tr>
+          <th scope="row">Velocidade do vento</td>
+          <td>2,51 m/s</td>
+        </tr>
+        <tr>
+          <th scope="row">Direção do Vento</td>
+          <td>123º</td>
+        </tr>
+        <tr>
+          <th scope="row">Pressão atmosférica</td>
+          <td>909 mbar</td>
+        </tr>
+        <tr>
+          <th scope="row">Pluviosidade</td>
+          <td>0 mm</td>
+        </tr>
+      </table>
+      <h2>Dados Radiométricos (irradiância)</h2>
+      <table class="table table-sm table-dark">
+        <tr>
+          <th scope="row">Plano inclinado</td>
+          <td>870 W/m2</td>
+        </tr>
+        <tr>
+          <th scope="row">Global Horizontal</td>
+          <td>800 W/m2</td>
+        </tr>
+        <tr>
+          <th scope="row">Direta normal</td>
+          <td>750 W/m2</td>
+        </tr>
+        <tr>
+          <th scope="row">Difusa</td>
+          <td>150 W/m2</td>
+        </tr>
+      </table>
+    </aside>
+  </div>
+  <div class="graficos">
+    <section>
+      <div class="grafico">Isso é um grafico</div>
+    </section>
+    <section>
+      <div class="grafico">Isso também</div>
+    </section>
+    <section>
+      <div class="grafico">Use sua criatividade</div>
+    </section>
+    <section>
+      <div class="grafico">Talvez não funcione com burros</div>
+    </section>
+  </div>
 </body>
 </html>

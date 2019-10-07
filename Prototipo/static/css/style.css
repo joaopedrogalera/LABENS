@@ -1,0 +1,80 @@
+body{
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-family: arial;
+  color: #ddd;
+}
+
+.lateral{
+  margin: 0
+  padding: 0;
+  width: 30%;
+  height: 100%;
+  background: #333;
+  float: left;
+}
+
+.lateral header{
+  background: #
+}
+
+.lateral header .logo{
+  background: #ddd;
+}
+
+.lateral header .logo img{
+  height: 35px;
+  margin: 5px;
+}
+
+.lateral header h1{
+  width: 100%;
+  margin: 5px 0 5px 0;
+  text-align: center;
+}
+
+img.campus{
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+.lateral aside h1{
+  width: 100%;
+  text-align: center;
+  margin: 10px 0 5px 0;
+  font-size: 20px;
+}
+
+.lateral aside h2{
+  font-size: 15px;
+  margin-left: 5px;
+}
+
+.lateral aside table{
+  font-size: 14px;
+}
+
+.graficos{
+  margin: 0
+  padding: 0;
+  height: 100%;
+  background: #444;
+}
+
+.graficos section{
+  margin: 0;
+  padding: 0;
+  width: 35%;
+  height: 50%;
+  float: left;
+}
+
+.graficos .grafico{
+  background: #222;
+  margin: 15px;
+  height: 90%;
+}
