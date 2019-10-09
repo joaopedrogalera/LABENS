@@ -62,13 +62,17 @@ img.campus{
   padding: 0;
   width: 100%;
   min-width: 350px;
-  height: 300px;
 }
 
 .graficos .grafico{
   background: #222;
   margin: 15px;
-  height: 90%;
+  padding-bottom: 30px;
+}
+
+.grafico-container{
+  position: relative;
+  top: 30px;
 }
 
 @media screen and (min-width: 680px) {
@@ -90,6 +94,10 @@ img.campus{
     float: left;
     width: 35%;
     height: 50%;
+  }
+  .graficos .grafico{
+    height: 90%;
+    padding-bottom: 0;
   }
 }
 
