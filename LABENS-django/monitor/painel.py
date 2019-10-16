@@ -22,8 +22,8 @@ def painel(request,campus):
     mono2File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     poli1File = csvInvPrefix+'poli/inv-2'+str(campus.id)+'b01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     poli2File = csvInvPrefix+'poli/inv-2'+str(campus.id)+'b02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cigsFile = csvInvPrefix+'cigs/inv-1'+str(campus.id)+'c01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cdteFile = csvInvPrefix+'cdte/inv-1'+str(campus.id)+'d01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cdteFile = csvInvPrefix+'cdte/inv-1'+str(campus.id)+'c01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cigsFile = csvInvPrefix+'cigs/inv-1'+str(campus.id)+'d01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     #Arquivos de geração do mês anterior para calcular a produtividade
     if not data.strftime("%m")=='01':
@@ -45,14 +45,14 @@ def painel(request,campus):
     mono2FileOld = csvInvPrefixOld+'mono/inv-2'+str(campus.id)+'a02_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
     poli1FileOld = csvInvPrefixOld+'poli/inv-2'+str(campus.id)+'b01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
     poli2FileOld = csvInvPrefixOld+'poli/inv-2'+str(campus.id)+'b02_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
-    cigsFileOld = csvInvPrefixOld+'cigs/inv-1'+str(campus.id)+'c01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
-    cdteFileOld = csvInvPrefixOld+'cdte/inv-1'+str(campus.id)+'d01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
+    cdteFileOld = csvInvPrefixOld+'cdte/inv-1'+str(campus.id)+'c01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
+    cigsFileOld = csvInvPrefixOld+'cigs/inv-1'+str(campus.id)+'d01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
 
     #iniciando valores a serem exibidos na página
     mono = {'Geracao':[],'Inst': 0, 'Erro': 0}
     poli = {'Geracao':[],'Inst': 0, 'Erro': 0}
-    cigs = {'Geracao':[],'Inst': 0, 'Erro': 0}
     cdte = {'Geracao':[],'Inst': 0, 'Erro': 0}
+    cigs = {'Geracao':[],'Inst': 0, 'Erro': 0}
 
     #Mono
     if os.path.isfile(mono1File) and os.path.isfile(mono2File):
@@ -150,10 +150,52 @@ def painel(request,campus):
         poli1csv.close()
         poli2csv.close()
 
+    #cdte
+    if os.path.isfile(cdteFile):
+        cdtecsv = open(cdteFile, newline='')
+        cdtereader = csv.reader(cdtecsv, delimiter='	')
+
+        cdtestatus = 1
+
+        for cdterow in cdtereader:
+            cdte['Inst'] = cdterow[6]
+            cdtestatus = cdterow[10]
+
+            if cdte['Inst'] == '':
+                cdte['Inst'] = 0
+
+            cdte['Geracao'].append(cdte['Inst'])
+
+        if cdtestatus == '2':
+            cdte['Erro'] = 1
+
+        cdtecsv.close()
+
+    #cigs
+    if os.path.isfile(cigsFile):
+        cigscsv = open(cigsFile, newline='')
+        cigsreader = csv.reader(cigscsv, delimiter='	')
+
+        cigsstatus = 1
+
+        for cigsrow in cigsreader:
+            cigs['Inst'] = cigsrow[6]
+            cigsstatus = cigsrow[10]
+
+            if cigs['Inst'] == '':
+                cigs['Inst'] = 0
+
+            cigs['Geracao'].append(cigs['Inst'])
+
+        if cigsstatus == '2':
+            cigs['Erro'] = 1
+
+        cigscsv.close()
+
     context = {'campus':campus,
                 'mono':mono,
                 'poli':poli,
-                'cigs':cigs,
-                'cdte':cdte}
+                'cdte':cdte,
+                'cigs':cigs}
 
     return render(request,'painel.html',context)

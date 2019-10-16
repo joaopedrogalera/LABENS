@@ -72,13 +72,13 @@
   <div class="graficos">
     <section>
       <div class="grafico">
-        <h1>Potência instantânea</h1>
+        <h1>Potência instantânea {% if mono.Erro or poli.Erro %}<span class="erro">Erro</span>{% endif %}</h1>
         <div class="grafico-container"><canvas id="MonoPoliGeracao"></canvas></div>
       </div>
     </section>
     <section>
       <div class="grafico">
-        <h1>Potência instantânea</h1>
+        <h1>Potência instantânea {% if cigs.Erro or cdte.Erro %}<span class="erro">Erro</span>{% endif %}</h1>
         <div class="grafico-container"><canvas id="CigsCdteGeracao"></canvas></div>
       </div>
     </section>
@@ -1592,41 +1592,41 @@
         labels: horasLabel,
         datasets: [
           {
-            label: 'CIGS - {{ cigs.Inst }}W',
+            label: 'CdTe - {% if not cdte.Erro %}{{ cdte.Inst }}W{% else %}ERRO!!{% endif %}',
+            fill: false,
+            borderColor: 'rgba(118,114,111,1)',
+            backgroundColor: 'rgba(118,114,111,1)',
+            data: [{% for entry in cdte.Geracao %}{{ entry }},{% endfor %}],
+            pointRadius: 0,
+            borderWidth: 1
+          },
+          {
+            label: 'CIGS - {% if not cigs.Erro %}{{ cigs.Inst }}W{% else %}ERRO!!{% endif %}',
             fill: false,
             borderColor: 'rgba(16,174,89,1)',
             backgroundColor: 'rgba(16,174,89,1)',
             data: [{% for entry in cigs.Geracao %}{{ entry }},{% endfor %}],
             pointRadius: 0,
             borderWidth: 1
-          },
-          {
-            label: 'CdTe - {{ cdte.Inst }}W',
-            fill: false,
-            borderColor: 'rgba(118,114,111,1)',
-            backgroundColor: 'rgba(118,114,111,1)',
-            data: [{% for entry in cdte.Geracao %}{{ entry }},{% endfor %}],
-  pointRadius: 0,
-  borderWidth: 1
-}
-]
-},
-options:{
-  scales:{
-    xAxes:[{
-      scaleLabel:{
-        display: true,
-        labelString: 'Hora (UTC)'
-      }
-    }],
-    yAxes:[{
-      scaleLabel:{
-        display: true,
-        labelString: 'Potência (W)'
-      }
-    }]
+          }
+        ]
+      },
+      options:{
+        scales:{
+          xAxes:[{
+            scaleLabel:{
+              display: true,
+              labelString: 'Hora (UTC)'
+            }
+          }],
+          yAxes:[{
+            scaleLabel:{
+              display: true,
+              labelString: 'Potência (W)'
+            }
+          }]
   }
-}
+  }
       });
 
       var IrradianciaChart = new Chart(Irradiancia,{

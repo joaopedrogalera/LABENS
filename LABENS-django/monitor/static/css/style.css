@@ -80,6 +80,10 @@ img.campus{
   text-align: center;
 }
 
+.grafico h1 .erro{
+  background-color: #f00;
+}
+
 .grafico-container{
   position: relative;
 }
