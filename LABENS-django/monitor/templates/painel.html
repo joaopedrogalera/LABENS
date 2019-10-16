@@ -1549,20 +1549,20 @@
         labels: horasLabel,
         datasets: [
           {
-            label: 'Monocristalino - {{ monoInst }}W',
+            label: 'Monocristalino - {{ mono.Inst }}W',
             fill: false,
             borderColor: 'rgba(83,157,182,1)',
             backgroundColor: 'rgba(83,157,182,1)',
-            data: [{% for entry in monoGeracao %}{{ entry }},{% endfor %}],
+            data: [{% for entry in mono.Geracao %}{{ entry }},{% endfor %}],
             pointRadius: 0,
             borderWidth: 1
           },
           {
-            label: 'Policristalino - {{ poliInst }}W',
+            label: 'Policristalino - {{ poli.Inst }}W',
             fill: false,
             borderColor: 'rgba(186,28,27,1)',
             backgroundColor: 'rgba(186,28,27,1)',
-            data: [{% for entry in poliGeracao %}{{ entry }},{% endfor %}],
+            data: [{% for entry in poli.Geracao %}{{ entry }},{% endfor %}],
             pointRadius: 0,
             borderWidth: 1,
           }
@@ -1573,7 +1573,7 @@
           xAxes:[{
             scaleLabel:{
               display: true,
-              labelString: 'Hora'
+              labelString: 'Hora (UTC)'
             }
           }],
           yAxes:[{
@@ -1592,20 +1592,20 @@
         labels: horasLabel,
         datasets: [
           {
-            label: 'CIGS - {{ cigsInst }}W',
+            label: 'CIGS - {{ cigs.Inst }}W',
             fill: false,
             borderColor: 'rgba(16,174,89,1)',
             backgroundColor: 'rgba(16,174,89,1)',
-            data: [{% for entry in cigsGeracao %}{{ entry }},{% endfor %}],
+            data: [{% for entry in cigs.Geracao %}{{ entry }},{% endfor %}],
             pointRadius: 0,
             borderWidth: 1
           },
           {
-            label: 'CdTe - {{ cdteInst }}W',
+            label: 'CdTe - {{ cdte.Inst }}W',
             fill: false,
             borderColor: 'rgba(118,114,111,1)',
             backgroundColor: 'rgba(118,114,111,1)',
-            data: [{% for entry in cdteGeracao %}{{ entry }},{% endfor %}],
+            data: [{% for entry in cdte.Geracao %}{{ entry }},{% endfor %}],
   pointRadius: 0,
   borderWidth: 1
 }
@@ -1616,7 +1616,7 @@ options:{
     xAxes:[{
       scaleLabel:{
         display: true,
-        labelString: 'Hora'
+        labelString: 'Hora (UTC)'
       }
     }],
     yAxes:[{
@@ -3520,7 +3520,7 @@ options:{
             xAxes:[{
               scaleLabel:{
                 display: true,
-                labelString: 'Hora'
+                labelString: 'Hora (UTC)'
               }
             }],
             yAxes:[{
