@@ -1549,7 +1549,7 @@
         labels: horasLabel,
         datasets: [
           {
-            label: 'Monocristalino - {{ mono.Inst }}W',
+            label: 'Monocristalino - {% if not mono.Erro %}{{ mono.Inst }}W{% else %}ERRO!!{% endif %}',
             fill: false,
             borderColor: 'rgba(83,157,182,1)',
             backgroundColor: 'rgba(83,157,182,1)',
@@ -1558,7 +1558,7 @@
             borderWidth: 1
           },
           {
-            label: 'Policristalino - {{ poli.Inst }}W',
+            label: 'Policristalino - {% if not poli.Erro %}{{ poli.Inst }}W{% else %}ERRO!!{% endif %}',
             fill: false,
             borderColor: 'rgba(186,28,27,1)',
             backgroundColor: 'rgba(186,28,27,1)',

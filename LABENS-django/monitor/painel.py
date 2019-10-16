@@ -67,11 +67,15 @@ def painel(request,campus):
         mono1pot = 0
         mono2pot = 0
 
+        mono1status = 1
+        mono2status = 1
+
         while not mono1finished or not mono2finished:
             if not mono1finished:
                 try:
                     mono1row = next(mono1reader)
                     mono1pot = mono1row[6]
+                    mono1status = mono1row[10]
                 except:
                     mono1finished = 1
 
@@ -79,6 +83,7 @@ def painel(request,campus):
                 try:
                     mono2row = next(mono2reader)
                     mono2pot = mono2row[6]
+                    mono2status = mono2row[10]
                 except:
                     mono2finished = 1
 
@@ -90,6 +95,9 @@ def painel(request,campus):
 
             mono['Inst'] = int(mono1pot) + int(mono2pot)
             mono['Geracao'].append(mono['Inst'])
+
+        if mono1status == '2' or mono2status == '2':
+            mono['Erro'] = 1
 
         mono1csv.close()
         mono2csv.close()
@@ -107,11 +115,15 @@ def painel(request,campus):
         poli1pot = 0
         poli2pot = 0
 
+        poli1status = 1
+        poli2status = 1
+
         while not poli1finished or not poli2finished:
             if not poli1finished:
                 try:
                     poli1row = next(poli1reader)
                     poli1pot = poli1row[6]
+                    poli1status = poli1row[10]
                 except:
                     poli1finished = 1
 
@@ -119,6 +131,7 @@ def painel(request,campus):
                 try:
                     poli2row = next(poli2reader)
                     poli2pot = poli2row[6]
+                    poli2status = poli2row[10]
                 except:
                     poli2finished = 1
 
@@ -130,6 +143,9 @@ def painel(request,campus):
 
             poli['Inst'] = int(poli1pot) + int(poli2pot)
             poli['Geracao'].append(poli['Inst'])
+
+        if poli1status == '2' or poli2status == '2':
+            poli['Erro'] = 1
 
         poli1csv.close()
         poli2csv.close()
