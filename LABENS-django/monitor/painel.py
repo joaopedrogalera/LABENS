@@ -297,16 +297,16 @@ def painel(request,campus):
     produtividade = {'mono':0,'poli':0,'cdte':0,'cigs':0}
 
     if monoEnergy > monoEnergyOld:
-        produtividade['mono'] = monoEnergy - monoEnergyOld
+        produtividade['mono'] = (monoEnergy - monoEnergyOld)*1000/(14*365)
 
     if poliEnergy > poliEnergyOld:
-        produtividade['poli'] = poliEnergy - poliEnergyOld
+        produtividade['poli'] = (poliEnergy - poliEnergyOld)*1000/(14*335)
 
     if cdteEnergy > cdteEnergyOld:
-        produtividade['cdte'] = cdteEnergy - cdteEnergyOld
+        produtividade['cdte'] = (cdteEnergy - cdteEnergyOld)*1000/(18*85)
 
     if cigsEnergy > cigsEnergyOld:
-        produtividade['cigs'] = cigsEnergy - cigsEnergyOld
+        produtividade['cigs'] = (cigsEnergy - cigsEnergyOld)*1000/(12*140)
 
     context = {'campus':campus,
                 'mono':mono,
