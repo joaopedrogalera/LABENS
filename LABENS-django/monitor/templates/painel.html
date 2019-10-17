@@ -3536,11 +3536,12 @@
       var produtividadeChart = new Chart(Produtividade,{
         type: 'bar',
         data: {
-          labels: ['Mono', 'Poli', 'Cigs', 'CdTe'],
+          labels: ['Mono', 'Poli', 'CdTe', 'Cigs'],
           datasets: [
             {
-              backgroundColor: ['rgba(68,115,197,1)','rgba(254,0,0,1)','rgba(0,115,80,1)','rgba(166,166,166,1)'],
-              data: [95,87,68,83]
+              label: 'Produtividade',
+              backgroundColor: ['rgba(68,115,197,1)','rgba(254,0,0,1)','rgba(166,166,166,1)','rgba(0,115,80,1)'],
+              data: [{{ produtividade.mono }},{{ produtividade.poli }},{{ produtividade.cdte }},{{ produtividade.cigs }}]
             }
           ]
         },

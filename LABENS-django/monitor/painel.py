@@ -54,6 +54,17 @@ def painel(request,campus):
     cdte = {'Geracao':[],'Inst': 0, 'Erro': 0}
     cigs = {'Geracao':[],'Inst': 0, 'Erro': 0}
 
+    #Variaveis para calcular energia gerada
+    monoEnergy = 0
+    poliEnergy = 0
+    cdteEnergy = 0
+    cigsEnergy = 0
+
+    monoEnergyOld = 0
+    poliEnergyOld = 0
+    cdteEnergyOld = 0
+    cigsEnergyOld = 0
+
     #Mono
     if os.path.isfile(mono1File) and os.path.isfile(mono2File):
         mono1csv = open(mono1File, newline='')
@@ -67,6 +78,9 @@ def painel(request,campus):
         mono1pot = 0
         mono2pot = 0
 
+        mono1Energy = 0
+        mono2Energy = 0
+
         mono1status = 1
         mono2status = 1
 
@@ -76,6 +90,8 @@ def painel(request,campus):
                     mono1row = next(mono1reader)
                     mono1pot = mono1row[6]
                     mono1status = mono1row[10]
+                    if float(mono1row[7]) > mono1Energy:
+                        mono1Energy = float(mono1row[7])
                 except:
                     mono1finished = 1
 
@@ -84,6 +100,8 @@ def painel(request,campus):
                     mono2row = next(mono2reader)
                     mono2pot = mono2row[6]
                     mono2status = mono2row[10]
+                    if float(mono2row[7]) > mono2Energy:
+                        mono2Energy = float(mono2row[7])
                 except:
                     mono2finished = 1
 
@@ -95,6 +113,8 @@ def painel(request,campus):
 
             mono['Inst'] = int(mono1pot) + int(mono2pot)
             mono['Geracao'].append(mono['Inst'])
+
+        monoEnergy = float(mono1Energy) + float(mono2Energy)
 
         if mono1status == '2' or mono2status == '2':
             mono['Erro'] = 1
@@ -115,6 +135,9 @@ def painel(request,campus):
         poli1pot = 0
         poli2pot = 0
 
+        poli1Energy = 0
+        poli2Energy = 0
+
         poli1status = 1
         poli2status = 1
 
@@ -124,6 +147,8 @@ def painel(request,campus):
                     poli1row = next(poli1reader)
                     poli1pot = poli1row[6]
                     poli1status = poli1row[10]
+                    if float(poli1row[7]) > poli1Energy:
+                        poli1Energy = float(poli1row[7])
                 except:
                     poli1finished = 1
 
@@ -132,6 +157,8 @@ def painel(request,campus):
                     poli2row = next(poli2reader)
                     poli2pot = poli2row[6]
                     poli2status = poli2row[10]
+                    if float(poli2row[7]) > poli2Energy:
+                        poli2Energy = float(poli2row[7])
                 except:
                     poli2finished = 1
 
@@ -143,6 +170,8 @@ def painel(request,campus):
 
             poli['Inst'] = int(poli1pot) + int(poli2pot)
             poli['Geracao'].append(poli['Inst'])
+
+        poliEnergy = float(poli1Energy) + float(poli2Energy)
 
         if poli1status == '2' or poli2status == '2':
             poli['Erro'] = 1
@@ -160,6 +189,8 @@ def painel(request,campus):
         for cdterow in cdtereader:
             cdte['Inst'] = cdterow[6]
             cdtestatus = cdterow[10]
+            if float(cdterow[7]) > cdteEnergy:
+                cdteEnergy = float(cdterow[7])
 
             if cdte['Inst'] == '':
                 cdte['Inst'] = 0
@@ -181,6 +212,8 @@ def painel(request,campus):
         for cigsrow in cigsreader:
             cigs['Inst'] = cigsrow[6]
             cigsstatus = cigsrow[10]
+            if float(cigsrow[7]) > cigsEnergy:
+                cigsEnergy = float(cigsrow[7])
 
             if cigs['Inst'] == '':
                 cigs['Inst'] = 0
@@ -192,10 +225,94 @@ def painel(request,campus):
 
         cigscsv.close()
 
+    #Calcula produtividade
+    #Mono
+    if os.path.isfile(mono1FileOld) and os.path.isfile(mono1FileOld):
+        mono1csvOld = open(mono1FileOld, newline='')
+        mono2csvOld = open(mono2FileOld, newline='')
+        mono1readerOld = csv.reader(mono1csvOld, delimiter='	')
+        mono2readerOld = csv.reader(mono2csvOld, delimiter='	')
+
+        mono1EnergyOld = 0
+        mono2EnergyOld = 0
+
+        for mono1rowOld in mono1readerOld:
+            if float(mono1rowOld[7]) > mono1EnergyOld:
+                mono1EnergyOld = float(mono1rowOld[7])
+
+        for mono2rowOld in mono2readerOld:
+            if float(mono2rowOld[7]) > mono2EnergyOld:
+                mono2EnergyOld = float(mono2rowOld[7])
+
+        monoEnergyOld = mono1EnergyOld + mono2EnergyOld
+
+        mono1csvOld.close()
+        mono2csvOld.close()
+
+    #Poli
+    if os.path.isfile(poli1FileOld) and os.path.isfile(poli1FileOld):
+        poli1csvOld = open(poli1FileOld, newline='')
+        poli2csvOld = open(poli2FileOld, newline='')
+        poli1readerOld = csv.reader(poli1csvOld, delimiter='	')
+        poli2readerOld = csv.reader(poli2csvOld, delimiter='	')
+
+        poli1EnergyOld = 0
+        poli2EnergyOld = 0
+
+        for poli1rowOld in poli1readerOld:
+            if float(poli1rowOld[7]) > poli1EnergyOld:
+                poli1EnergyOld = float(poli1rowOld[7])
+
+        for poli2rowOld in poli2readerOld:
+            if float(poli2rowOld[7]) > poli2EnergyOld:
+                poli2EnergyOld = float(poli2rowOld[7])
+
+        poliEnergyOld = poli1EnergyOld + poli2EnergyOld
+
+        poli1csvOld.close()
+        poli2csvOld.close()
+
+    #cdte
+    if os.path.isfile(cdteFileOld):
+        cdtecsvOld = open(cdteFileOld, newline='')
+        cdtereaderOld = csv.reader(cdtecsvOld, delimiter='	')
+
+        for cdterowOld in cdtereaderOld:
+            if float(cdterowOld[7]) > cdteEnergyOld:
+                cdteEnergyOld = float(cdterowOld[7])
+
+        cdtecsvOld.close()
+
+    #cigs
+    if os.path.isfile(cigsFileOld):
+        cigscsvOld = open(cigsFileOld, newline='')
+        cigsreaderOld = csv.reader(cigscsvOld, delimiter='	')
+
+        for cigsrowOld in cigsreaderOld:
+            if float(cigsrowOld[7]) > cigsEnergyOld:
+                cigsEnergyOld = float(cigsrowOld[7])
+
+        cigscsvOld.close()
+
+    produtividade = {'mono':0,'poli':0,'cdte':0,'cigs':0}
+
+    if monoEnergy > monoEnergyOld:
+        produtividade['mono'] = monoEnergy - monoEnergyOld
+
+    if poliEnergy > poliEnergyOld:
+        produtividade['poli'] = poliEnergy - poliEnergyOld
+
+    if cdteEnergy > cdteEnergyOld:
+        produtividade['cdte'] = cdteEnergy - cdteEnergyOld
+
+    if cigsEnergy > cigsEnergyOld:
+        produtividade['cigs'] = cigsEnergy - cigsEnergyOld
+
     context = {'campus':campus,
                 'mono':mono,
                 'poli':poli,
                 'cdte':cdte,
-                'cigs':cigs}
+                'cigs':cigs,
+                'produtividade':produtividade}
 
     return render(request,'painel.html',context)
