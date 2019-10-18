@@ -16,7 +16,7 @@ def painel(request,campus):
     data = datetime.now()
 
     #Arquivos de geração do dia
-    csvInvPrefix = DropboxPath+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
+    csvInvPrefix = DropboxPath+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
 
     mono1File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     mono2File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
@@ -38,7 +38,7 @@ def painel(request,campus):
         lastMonthYear = str(int(data.strftime("%Y"))-1)
         lastMonth = '12'
 
-    csvInvPrefixOld = DropboxPath+lastMonthYear+'/'+lastMonth+'/inversores/'
+    csvInvPrefixOld = DropboxPath+'Aplicativos/LABENS-scada/leituras/'+lastMonthYear+'/'+lastMonth+'/inversores/'
     lastMonthDays = monthrange(int(lastMonthYear),int(lastMonth))
 
     mono1FileOld = csvInvPrefixOld+'mono/inv-2'+str(campus.id)+'a01_'+lastMonthYear+'-'+lastMonth+'-'+str(lastMonthDays[1])+'.csv'
