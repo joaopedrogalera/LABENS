@@ -3542,7 +3542,7 @@
             {
               label: 'Produtividade',
               backgroundColor: ['rgba(68,115,197,1)','rgba(254,0,0,1)','rgba(166,166,166,1)','rgba(0,115,80,1)'],
-              data: [{{ produtividade.mono }},{{ produtividade.poli }},{{ produtividade.cdte }},{{ produtividade.cigs }}]
+              data: [{{ produtividade.mono|floatformat:2 }},{{ produtividade.poli|floatformat:2 }},{{ produtividade.cdte|floatformat:2 }},{{ produtividade.cigs|floatformat:2 }}]
             }
           ]
         },
