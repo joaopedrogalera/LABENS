@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from datetime import datetime
+import datetime
 import csv
 import os.path
 from calendar import monthrange
@@ -38,7 +38,7 @@ def painel(request,campus):
     except Campus.DoesNotExist:
         return redirect('/')
 
-    data = datetime.now()
+    data = datetime.datetime.now()
 
     #Arquivos de geração do dia
     csvInvPrefix = DropboxPath+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
@@ -57,12 +57,47 @@ def painel(request,campus):
     cdte = ProcessaCSV(cdteFile)
     cigs = ProcessaCSV(cigsFile)
 
+    #Dados Ambientais
+    FtpPath = '/mnt/ftp/'
+
+    StationTypes = ['SONDA','EPE']
+    StationType = StationTypes[campus.estTipo]
+
+    ambFile = FtpPath+campus.cod.upper()+'_'+StationType+'/TAB_SCADA.DAT'
+
+    #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
+    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
+    finalTime = initialTime + datetime.timedelta(days=1)
+
+    irradiancia = {'Global':{'Dia':[],'Inst':0},'Inclinado':{'Dia':[],'Inst':0}}
+
+    if os.path.isfile(ambFile):
+        datFile = open(ambFile, newline='')
+        reader = csv.reader(datFile, delimiter=',')
+        next(reader)
+        next(reader)
+        next(reader)
+        next(reader)
+        for row in reader:
+            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
+            if entrydate >= initialTime and entrydate <= finalTime:
+                if campus.estTipo == 0:
+                    irradiancia['Global']['Dia'].append(row[7])
+                    irradiancia['Inclinado']['Dia'].append(row[8])
+                else:
+                    irradiancia['Global']['Dia'].append(row[4])
+                    irradiancia['Inclinado']['Dia'].append(row[5])
+
+        datFile.close()
+
     context = {'campus':campus,
+                'estTipo': StationType,
                 'mono1':mono1,
                 'mono2':mono2,
                 'poli1':poli1,
                 'poli2':poli2,
                 'cdte':cdte,
-                'cigs':cigs}
+                'cigs':cigs,
+                'irradiancia':irradiancia}
 
     return render(request,'painelCampus.html',context)
