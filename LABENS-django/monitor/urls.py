@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('',views.index),
-    path('painel/',RedirectView.as_view(url='/')),
-    path('painel/<str:campus>/',views.showPainel),
+    path('painelCampus/',RedirectView.as_view(url='/')),
+    path('painelCampus/<str:campus>/',views.showPainelCampus),
 ]
