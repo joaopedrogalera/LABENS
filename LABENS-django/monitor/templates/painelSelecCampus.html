@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LABENS</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="300" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style-index.css' %}" />
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <img src="{% static 'img/utfpr.png' %}" alt="Logo UTFPR" title="UTFPR" />
+      <img src="{% static 'img/copel.png' %}" alt="Logo COPEL" title="COPEL" />
+      <img src="{% static 'img/labens.png' %}" alt="Logo LABENS" title="LABENS" />
+    </div>
+    <ul>
+      {% for campus in campi %}
+      <li><a href="{{ campus.cod }}"><button type="button" class="btn btn-primary btn-lg btn-block">Campus {{ campus.nome }}</button></a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+</body>
+</html>

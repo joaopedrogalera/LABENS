@@ -1,0 +1,26 @@
+body{
+  background: #ccc;
+  margin: 0;
+  padding: 0;
+}
+
+nav{
+  width: 100%;
+  max-width: 600px;
+  margin: 15px auto;
+}
+
+nav img{
+  height: 50px;
+  margin: 15px;
+}
+
+nav ul{
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li{
+  padding: 0;
+  margin: 15px;
+}
