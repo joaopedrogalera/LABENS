@@ -8,6 +8,7 @@ body{
 
 header .logo{
   background: #ddd;
+  text-align: center;
 }
 
 header .logo img{
