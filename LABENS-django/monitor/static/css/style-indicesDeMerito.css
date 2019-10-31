@@ -1,0 +1,64 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: arial;
+  color: #fff;
+  background: #444;
+}
+
+header .logo{
+  background: #ddd;
+}
+
+header .logo img{
+  height: 35px;
+  margin: 5px;
+}
+
+header h1{
+  width: 100%;
+  margin: 5px 0 5px 0;
+  text-align: center;
+}
+
+section.tabela{
+  width:100%;
+  font-size: 20px;
+  color: #ddd;
+}
+
+section.tabela div.tabela{
+  background: #333;
+  margin: 10px;
+  padding-bottom: 10px;
+}
+
+.tabela h1{
+  margin: 5px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.tabela table{
+  width: 95%;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  border-collapse: collapse;
+}
+
+.tabela table, .tabela th, .tabela td{
+  border: solid 1px #ddd;
+}
+
+@media screen and (min-width: 1270px) {
+  body{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  section.tabela{
+    width:50%;
+    height: 45%;
+    float: left;
+  }

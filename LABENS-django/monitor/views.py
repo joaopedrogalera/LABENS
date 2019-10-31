@@ -12,5 +12,7 @@ def selectCampus(request):
     return render(request,'painelSelecCampus.html',{'campi':campi})
 
 def showPainelCampus(request,campus):
-
     return painelCampus.painel(request,campus)
+
+def indicesDeMerito(request):
+    return render(request,'indicesDeMerito.html')
