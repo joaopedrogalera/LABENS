@@ -113,6 +113,9 @@ img.campus{
     height: 90%;
     padding-bottom: 0;
   }
+  .grafico-container{
+    height: 90%;
+  }
 }
 
 @media screen and (min-width: 680px) and (max-width: 1150px){
