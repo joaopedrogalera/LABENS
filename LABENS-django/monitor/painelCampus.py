@@ -69,7 +69,26 @@ def painel(request,campus):
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
     finalTime = initialTime + datetime.timedelta(days=1)
 
-    irradiancia = {'Global':{'Dia':[],'Inst':0},'Inclinado':{'Dia':[],'Inst':0}}
+    irradianciaGraf = {'Global':[],'Inclinado':[]}
+
+    dadosMeterologicos =[
+        {'titulo':'Temperatura Ambiente','valor':'N/D','unidade':'°C'},
+        {'titulo':'Umidade Relativa do Ar','valor':'N/D','unidade':'%'},
+        {'titulo':'Velocidade do Vento','valor':'N/D','unidade':'m/s'},
+    ]
+
+    irradiancia = [
+        {'titulo':'Plano Inclinado','valor':'N/D'},
+        {'titulo':'Global Horizontal','valor':'N/D'}
+    ]
+
+    if campus.estTipo == 0:
+        dadosMeterologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
+        dadosMeterologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
+        dadosMeterologicos.append({'titulo':'Pluviosidade','valor':'N/D','unidade':'mm'})
+
+        irradiancia.append({'titulo':'Direta Normal','valor':'N/D'})
+        irradiancia.append({'titulo':'Difusa','valor':'N/D'})
 
     if os.path.isfile(ambFile):
         datFile = open(ambFile, newline='')
@@ -82,11 +101,30 @@ def painel(request,campus):
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
-                    irradiancia['Global']['Dia'].append(row[7])
-                    irradiancia['Inclinado']['Dia'].append(row[8])
+                    irradianciaGraf['Global'].append(row[7])
+                    irradianciaGraf['Inclinado'].append(row[9])
+
+                    dadosMeterologicos[0]['valor'] = row[14] #T Ambiente
+                    dadosMeterologicos[1]['valor'] = row[15] #Umidade
+                    dadosMeterologicos[2]['valor'] = row[20] #V Vento
+                    dadosMeterologicos[3]['valor'] = row[21] #Dir Vento
+                    dadosMeterologicos[4]['valor'] = row[13] #Pressão
+
+                    irradiancia[0]['valor'] = row[9] #Plano Inclinado
+                    irradiancia[1]['valor'] = row[7] #Global Horizontal
+                    irradiancia[2]['valor'] = row[10] #Direta Normal
+                    irradiancia[3]['valor'] = row[8] #Difusa
+
                 else:
-                    irradiancia['Global']['Dia'].append(row[4])
-                    irradiancia['Inclinado']['Dia'].append(row[5])
+                    irradianciaGraf['Global'].append(row[4])
+                    irradianciaGraf['Inclinado'].append(row[5])
+
+                    dadosMeterologicos[0]['valor'] = row[6] #T Ambiente
+                    dadosMeterologicos[1]['valor'] = row[7] #Umidade
+                    dadosMeterologicos[2]['valor'] = row[8] #V Vento
+
+                    irradiancia[0]['valor'] = row[5] #Plano Inclinado
+                    irradiancia[1]['valor'] = row[4] #Global Horizontal
 
         datFile.close()
 
@@ -98,6 +136,8 @@ def painel(request,campus):
                 'poli2':poli2,
                 'cdte':cdte,
                 'cigs':cigs,
+                'irradianciaGraf':irradianciaGraf,
+                'dadosMeterologicos':dadosMeterologicos,
                 'irradiancia':irradiancia}
 
     return render(request,'painelCampus.html',context)
