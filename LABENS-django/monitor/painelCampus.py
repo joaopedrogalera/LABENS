@@ -104,27 +104,27 @@ def painel(request,campus):
                     irradianciaGraf['Global'].append(row[7])
                     irradianciaGraf['Inclinado'].append(row[9])
 
-                    dadosMeterologicos[0]['valor'] = row[14] #T Ambiente
-                    dadosMeterologicos[1]['valor'] = row[15] #Umidade
-                    dadosMeterologicos[2]['valor'] = row[20] #V Vento
-                    dadosMeterologicos[3]['valor'] = row[21] #Dir Vento
-                    dadosMeterologicos[4]['valor'] = row[13] #Pressão
+                    dadosMeterologicos[0]['valor'] = float(row[14]) #T Ambiente
+                    dadosMeterologicos[1]['valor'] = float(row[15]) #Umidade
+                    dadosMeterologicos[2]['valor'] = float(row[20]) #V Vento
+                    dadosMeterologicos[3]['valor'] = float(row[21]) #Dir Vento
+                    dadosMeterologicos[4]['valor'] = float(row[13]) #Pressão
 
-                    irradiancia[0]['valor'] = row[9] #Plano Inclinado
-                    irradiancia[1]['valor'] = row[7] #Global Horizontal
-                    irradiancia[2]['valor'] = row[10] #Direta Normal
-                    irradiancia[3]['valor'] = row[8] #Difusa
+                    irradiancia[0]['valor'] = float(row[9]) #Plano Inclinado
+                    irradiancia[1]['valor'] = float(row[7]) #Global Horizontal
+                    irradiancia[2]['valor'] = float(row[10]) #Direta Normal
+                    irradiancia[3]['valor'] = float(row[8]) #Difusa
 
                 else:
                     irradianciaGraf['Global'].append(row[4])
                     irradianciaGraf['Inclinado'].append(row[5])
 
-                    dadosMeterologicos[0]['valor'] = row[6] #T Ambiente
-                    dadosMeterologicos[1]['valor'] = row[7] #Umidade
-                    dadosMeterologicos[2]['valor'] = row[8] #V Vento
+                    dadosMeterologicos[0]['valor'] = float(row[6]) #T Ambiente
+                    dadosMeterologicos[1]['valor'] = float(row[7]) #Umidade
+                    dadosMeterologicos[2]['valor'] = float(row[8]) #V Vento
 
-                    irradiancia[0]['valor'] = row[5] #Plano Inclinado
-                    irradiancia[1]['valor'] = row[4] #Global Horizontal
+                    irradiancia[0]['valor'] = float(row[5]) #Plano Inclinado
+                    irradiancia[1]['valor'] = float(row[4]) #Global Horizontal
 
         datFile.close()
 
