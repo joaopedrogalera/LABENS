@@ -41,7 +41,7 @@ def painel(request,campus):
     data = datetime.datetime.now()
 
     #Arquivos de geração do dia
-    csvInvPrefix = DropboxPath+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
+    csvInvPrefix = paths.Dropbox()+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
 
     mono1File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     mono2File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
@@ -61,7 +61,7 @@ def painel(request,campus):
     StationTypes = ['SONDA','EPE']
     StationType = StationTypes[campus.estTipo]
 
-    ambFile = FtpPath+campus.cod.upper()+'_'+StationType+'/TAB_SCADA.DAT'
+    ambFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_SCADA.DAT'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')

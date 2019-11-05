@@ -1,3 +1,5 @@
-DropboxPath = '/home/labens/Dropbox/'
+def Dropbox():
+    return '/home/labens/Dropbox/'
 
-FtpPath = '/mnt/ftp/'
+def Ftp():
+    return '/mnt/ftp/'
