@@ -62,6 +62,7 @@ def painel(request,campus):
     StationType = StationTypes[campus.estTipo]
 
     ambFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_SCADA.DAT'
+    pluvFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.DAT'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
@@ -127,6 +128,19 @@ def painel(request,campus):
                     irradiancia[1]['valor'] = float(row[4]) #Global Horizontal
 
         datFile.close()
+
+        if os.path.isfile(pluvFile):
+            datPluv = open(pluvFile, newline='')
+            readerPluv = csv.reader(datPluv, delimiter=',')
+
+            next(readerPluv)
+            next(readerPluv)
+            next(readerPluv)
+            next(readerPluv)
+            for row in readerPluv:
+                dadosMeterologicos[5]['valor'] = float(row[17])
+
+            datPluv.close()
 
     context = {'campus':campus,
                 'estTipo': StationType,
