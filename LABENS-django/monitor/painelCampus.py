@@ -4,6 +4,7 @@ import csv
 import os.path
 from calendar import monthrange
 from .models import Campus
+from . import paths
 from django.http import HttpResponse
 
 def ProcessaCSV(arquivo):
@@ -32,7 +33,6 @@ def ProcessaCSV(arquivo):
     return retorno
 
 def painel(request,campus):
-    DropboxPath = '/home/labens/Dropbox/'
     try:
         campus = Campus.objects.get(cod=campus)
     except Campus.DoesNotExist:
@@ -58,8 +58,6 @@ def painel(request,campus):
     cigs = ProcessaCSV(cigsFile)
 
     #Dados Ambientais
-    FtpPath = '/mnt/ftp/'
-
     StationTypes = ['SONDA','EPE']
     StationType = StationTypes[campus.estTipo]
 
@@ -69,6 +67,7 @@ def painel(request,campus):
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
     finalTime = initialTime + datetime.timedelta(days=1)
 
+    #Inicializa variaveis que serão renderizadas na página
     irradianciaGraf = {'Global':[],'Inclinado':[]}
 
     dadosMeterologicos =[
@@ -82,6 +81,7 @@ def painel(request,campus):
         {'titulo':'Global Horizontal','valor':'N/D'}
     ]
 
+    #Adiciona campos extras para estações SONDA
     if campus.estTipo == 0:
         dadosMeterologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
         dadosMeterologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
