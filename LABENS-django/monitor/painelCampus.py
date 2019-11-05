@@ -129,7 +129,7 @@ def painel(request,campus):
 
         datFile.close()
 
-        if os.path.isfile(pluvFile):
+        if os.path.isfile(pluvFile) and campus.estTipo == 0:
             datPluv = open(pluvFile, newline='')
             readerPluv = csv.reader(datPluv, delimiter=',')
 
