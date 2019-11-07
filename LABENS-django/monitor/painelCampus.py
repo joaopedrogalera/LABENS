@@ -12,15 +12,15 @@ def ProcessaCSV(arquivo):
 
     if os.path.isfile(arquivo):
         csvFile = open(arquivo, newline='')
-        reader = csv.reader(csvFile, delimiter='	')
+        reader = csv.reader((x.replace('\0', '') for x in csvFile), delimiter='	')
 
         status = 1
 
         for row in reader:
-            if len(row) >= 11:
+            try:
                 retorno['Inst'] = row[6]
                 status = row[10]
-            else:
+            except:
                 retorno['Inst'] = 0
                 status = 2
 
