@@ -17,8 +17,12 @@ def ProcessaCSV(arquivo):
         status = 1
 
         for row in reader:
-            retorno['Inst'] = row[6]
-            status = row[10]
+            if len(row) >= 11:
+                retorno['Inst'] = row[6]
+                status = row[10]
+            else:
+                retorno['Inst'] = 0
+                status = 2
 
             if retorno['Inst'] == '':
                 retorno['Inst'] = 0
