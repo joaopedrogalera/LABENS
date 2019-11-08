@@ -25,7 +25,7 @@
       <h1>Estação {{ estTipo }}</h1>
       <h2>Dados Meteorológicos</h2>
       <table class="table table-sm table-dark">
-        {% for row in dadosMeterologicos %}
+        {% for row in dadosMeteorologicos %}
           <tr>
             <th scope="row">{{ row.titulo }}</th>
             <td>{{ row.valor }} {{ row.unidade }}</td>

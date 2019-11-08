@@ -12,11 +12,12 @@ def ProcessaCSV(arquivo):
 
     if os.path.isfile(arquivo):
         csvFile = open(arquivo, newline='')
-        reader = csv.reader((x.replace('\0', '') for x in csvFile), delimiter='	')
+        reader = csv.reader((x.replace('\0', '') for x in csvFile), delimiter='	') #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
 
         status = 1
 
         for row in reader:
+            #O try/except serve para tratar casos que a linha vem incompleta
             try:
                 retorno['Inst'] = row[6]
                 status = row[10]
@@ -75,7 +76,7 @@ def painel(request,campus):
     #Inicializa variaveis que serão renderizadas na página
     irradianciaGraf = {'Global':[],'Inclinado':[]}
 
-    dadosMeterologicos =[
+    dadosMeteorologicos =[
         {'titulo':'Temperatura Ambiente','valor':'N/D','unidade':'°C'},
         {'titulo':'Umidade Relativa do Ar','valor':'N/D','unidade':'%'},
         {'titulo':'Velocidade do Vento','valor':'N/D','unidade':'m/s'},
@@ -88,23 +89,27 @@ def painel(request,campus):
 
     #Adiciona campos extras para estações SONDA
     if campus.estTipo == 0:
-        dadosMeterologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
-        dadosMeterologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
-        dadosMeterologicos.append({'titulo':'Pluviosidade','valor':'N/D','unidade':'mm'})
+        dadosMeteorologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
+        dadosMeteorologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
+        dadosMeteorologicos.append({'titulo':'Pluviosidade','valor':'N/D','unidade':'mm'})
 
         irradiancia.append({'titulo':'Direta Normal','valor':'N/D'})
         irradiancia.append({'titulo':'Difusa','valor':'N/D'})
 
+    #Dados de irradiância
     if os.path.isfile(radFile):
         datRad = open(radFile, newline='')
         reader = csv.reader(datRad, delimiter=',')
+        #Pula as primeiras quatro linhas do arquivo
         next(reader)
         next(reader)
         next(reader)
         next(reader)
         for row in reader:
+            #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
+                #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                 if row[6] != 'NAN':
                     irradianciaGraf['Global'].append(row[6])
                 else:
@@ -118,6 +123,7 @@ def painel(request,campus):
                 irradiancia[0]['valor'] = float(row[32]) #Plano Inclinado
                 irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
 
+                #Caso seja SONDA
                 if campus.estTipo == 0:
                     irradiancia[2]['valor'] = float(row[10]) #Direta Normal
                     irradiancia[3]['valor'] = float(row[14]) #Difusa
@@ -125,23 +131,24 @@ def painel(request,campus):
         datRad.close()
 
 
-
+    #Dados meteorologicos
     if os.path.isfile(metFile):
         datMet = open(metFile, newline='')
         reader = csv.reader(datMet, delimiter=',')
+        #Pula as primeiras quatro linhas do arquivo
         next(reader)
         next(reader)
         next(reader)
         next(reader)
         for row in reader:
-            dadosMeterologicos[0]['valor'] = float(row[14]) #T Ambiente
-            dadosMeterologicos[1]['valor'] = float(row[15]) #Umidade
-            dadosMeterologicos[2]['valor'] = float(row[6]) #V Vento
+            dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
+            dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
+            dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
 
             if campus.estTipo == 0:
-                dadosMeterologicos[3]['valor'] = float(row[10]) #Dir Vento
-                dadosMeterologicos[4]['valor'] = float(row[16]) #Pressão
-                dadosMeterologicos[5]['valor'] = float(row[17]) #Pluviosidade
+                dadosMeteorologicos[3]['valor'] = float(row[10]) #Dir Vento
+                dadosMeteorologicos[4]['valor'] = float(row[16]) #Pressão
+                dadosMeteorologicos[5]['valor'] = float(row[17]) #Pluviosidade
 
         datMet.close()
 
@@ -154,7 +161,7 @@ def painel(request,campus):
                 'cdte':cdte,
                 'cigs':cigs,
                 'irradianciaGraf':irradianciaGraf,
-                'dadosMeterologicos':dadosMeterologicos,
+                'dadosMeteorologicos':dadosMeteorologicos,
                 'irradiancia':irradiancia}
 
     return render(request,'painelCampus.html',context)
