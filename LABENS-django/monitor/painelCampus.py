@@ -105,15 +105,22 @@ def painel(request,campus):
         for row in reader:
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
+                if row[6] != 'NAN':
                     irradianciaGraf['Global'].append(row[6])
+                else:
+                    irradianciaGraf['Global'].append(0)
+
+                if row[32] != 'NAN':
                     irradianciaGraf['Inclinado'].append(row[32])
+                else:
+                    irradianciaGraf['Inclinado'].append(0)
 
-                    irradiancia[0]['valor'] = float(row[32]) #Plano Inclinado
-                    irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
+                irradiancia[0]['valor'] = float(row[32]) #Plano Inclinado
+                irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
 
-                    if campus.estTipo == 0:
-                        irradiancia[2]['valor'] = float(row[10]) #Direta Normal
-                        irradiancia[3]['valor'] = float(row[14]) #Difusa
+                if campus.estTipo == 0:
+                    irradiancia[2]['valor'] = float(row[10]) #Direta Normal
+                    irradiancia[3]['valor'] = float(row[14]) #Difusa
 
         datRad.close()
 
