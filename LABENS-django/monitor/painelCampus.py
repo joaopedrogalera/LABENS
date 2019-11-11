@@ -10,6 +10,9 @@ from django.http import HttpResponse
 def ProcessaCSV(arquivo):
     retorno = {'Geracao':[],'Inst': 0, 'Erro': 0}
 
+    data = datetime.datetime.now()
+    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
+
     if os.path.isfile(arquivo):
         csvFile = open(arquivo, newline='')
         reader = csv.reader((x.replace('\0', '') for x in csvFile), delimiter='	') #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
@@ -17,18 +20,20 @@ def ProcessaCSV(arquivo):
         status = 1
 
         for row in reader:
+            entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
             #O try/except serve para tratar casos que a linha vem incompleta
-            try:
-                retorno['Inst'] = row[6]
-                status = row[10]
-            except:
-                retorno['Inst'] = 0
-                status = 2
+            if entrydate >= initialTime:
+                try:
+                    retorno['Inst'] = row[6]
+                    status = row[10]
+                except:
+                    retorno['Inst'] = 0
+                    status = 2
 
-            if retorno['Inst'] == '':
-                retorno['Inst'] = 0
+                if retorno['Inst'] == '':
+                    retorno['Inst'] = 0
 
-            retorno['Geracao'].append(retorno['Inst'])
+                retorno['Geracao'].append(retorno['Inst'])
 
         if status == '2':
             retorno['Erro'] = 1
