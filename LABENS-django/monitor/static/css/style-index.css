@@ -10,6 +10,10 @@ nav{
   margin: 15px auto;
 }
 
+nav .logo{
+  text-align: center;
+}
+
 nav img{
   height: 50px;
   margin: 15px;
