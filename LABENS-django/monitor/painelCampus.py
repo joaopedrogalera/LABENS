@@ -21,17 +21,16 @@ def ProcessaCSV(arquivo):
 
         for row in reader:
             entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
-            #O try/except serve para tratar casos que a linha vem incompleta
             if entrydate >= initialTime:
-                try:
+                #Os dados corrompidos vem de duas formas, com a linha incompleta ou com o campo vazio. Em abos os casos, repete a entrada anterior
+                if len(row)>=11:
                     retorno['Inst'] = row[6]
                     status = row[10]
-                except:
-                    retorno['Inst'] = 0
+                else:
                     status = 2
 
                 if retorno['Inst'] == '':
-                    retorno['Inst'] = 0
+                    retorno['Inst'] = retorno['Geracao'][len(retorno['Geracao'])-1]
 
                 retorno['Geracao'].append(retorno['Inst'])
 
