@@ -4,7 +4,7 @@ body{
   padding: 0;
 }
 
-nav{
+nav, section{
   width: 100%;
   max-width: 600px;
   margin: 15px auto;
@@ -27,4 +27,12 @@ nav ul{
 nav ul li{
   padding: 0;
   margin: 15px;
+}
+
+section form{
+  margin: 15px;
+}
+
+section form input{
+  margin-bottom: 15px;
 }
