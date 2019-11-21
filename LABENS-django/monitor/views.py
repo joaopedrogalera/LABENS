@@ -5,6 +5,7 @@ from . import painelCampus
 from .models import Campus
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+import ipaddress
 # Create your views here.
 
 def index(request):
@@ -21,6 +22,13 @@ def login(request):
         redir = ''
         if 'redirect' in request.GET:
             redir = request.GET['redirect']
+
+        if ipaddress.IPv4Address(request.META['HTTP_X_FORWARDED_FOR'])>ipaddress.IPv4Address('200.134.0.0') and ipaddress.IPv4Address(request.META['HTTP_X_FORWARDED_FOR'])<ipaddress.IPv4Address('200.134.127.255'):
+            request.session['status'] = 1
+            if not redir == '':
+                return redirect(redir)
+            else:
+                return redirect('/')
 
         return render(request,'login.html',{'redirect':redir,'loginErr':0})
     else:
