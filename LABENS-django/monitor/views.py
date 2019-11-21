@@ -23,6 +23,7 @@ def login(request):
         if 'redirect' in request.GET:
             redir = request.GET['redirect']
 
+        #Pula exigencia de senha se o acesso vier da rede da UT.
         if ipaddress.IPv4Address(request.META['REMOTE_ADDR'])>ipaddress.IPv4Address('200.134.0.0') and ipaddress.IPv4Address(request.META['REMOTE_ADDR'])<ipaddress.IPv4Address('200.134.127.255'):
             request.session['status'] = 1
             if not redir == '':
