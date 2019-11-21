@@ -10,3 +10,10 @@ class Campus(models.Model):
 
     def __str__(self):
         return(self.nome)
+
+class FaixasIP(models.Model):
+    pref= models.CharField(max_length=15,primary_key=True)
+    descri = models.CharField(max_length=15)
+
+    def __str__(self):
+        return(self.descri)

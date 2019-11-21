@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.utils.http import urlencode
 from . import painelCampus
 from .models import Campus
+from .models import FaixasIP
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import ipaddress
@@ -24,7 +25,14 @@ def login(request):
             redir = request.GET['redirect']
 
         #Pula exigencia de senha se o acesso vier da rede da UT.
-        if ipaddress.IPv4Address(request.META['REMOTE_ADDR'])>ipaddress.IPv4Address('200.134.0.0') and ipaddress.IPv4Address(request.META['REMOTE_ADDR'])<ipaddress.IPv4Address('200.134.127.255'):
+        faixas = FaixasIP.objects.all()
+        ip = ipaddress.ip_address(request.META['REMOTE_ADDR'])
+        lib = 0
+        for faixa in faixas:
+            if ip in ipaddress.ip_network(faixa.pref):
+                lib = 1
+
+        if lib:
             request.session['status'] = 1
             if not redir == '':
                 return redirect(redir)
