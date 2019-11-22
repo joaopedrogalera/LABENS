@@ -9,17 +9,19 @@
   <link rel="stylesheet" href="{% static 'css/style-index.css' %}" />
 </head>
 <body>
+  <header>
+    <img src="{% static 'img/utfpr.png' %}" alt="Logo UTFPR" title="UTFPR" />
+    <img src="{% static 'img/copel.png' %}" alt="Logo COPEL" title="COPEL" />
+    <img src="{% static 'img/labens.png' %}" alt="Logo LABENS" title="LABENS" />
+  </header>
   <nav>
-    <div class="logo">
-      <img src="{% static 'img/utfpr.png' %}" alt="Logo UTFPR" title="UTFPR" />
-      <img src="{% static 'img/copel.png' %}" alt="Logo COPEL" title="COPEL" />
-      <img src="{% static 'img/labens.png' %}" alt="Logo LABENS" title="LABENS" />
+    <div class="card">
+      <ul>
+        {% for campus in campi %}
+        <li><a href="{{ campus.cod }}" class="btn btn-primary btn-lg btn-block">Campus {{ campus.nome }}</a></li>
+        {% endfor %}
+      </ul>
     </div>
-    <ul>
-      {% for campus in campi %}
-      <li><a href="{{ campus.cod }}" class="btn btn-primary btn-lg btn-block">Campus {{ campus.nome }}</a></li>
-      {% endfor %}
-    </ul>
   </nav>
 </body>
 </html>

@@ -1,20 +1,22 @@
 body{
-  background: #ccc;
+  background: #eee;
   margin: 0;
   padding: 0;
 }
 
-nav, section{
+nav, section, header{
   width: 100%;
   max-width: 600px;
   margin: 15px auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
-nav .logo{
+header{
   text-align: center;
 }
 
-nav img{
+header img{
   height: 50px;
   margin: 15px;
 }
@@ -22,6 +24,7 @@ nav img{
 nav ul{
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 nav ul li{
