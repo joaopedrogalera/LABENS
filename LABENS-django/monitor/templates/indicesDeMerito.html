@@ -6,6 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="refresh" content="300" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap-table.css' %}" />
   <link rel="stylesheet" href="{% static 'css/style-indicesDeMerito.css' %}" />
 </head>
 <body>
@@ -20,7 +21,7 @@
     <section class="tabela">
       <div class="tabela">
         <h1>Energia Gerada (kWh)</h1>
-        <table>
+        <table class="table table-bordered table-dark">
           <thead>
             <tr>
               <th rowspan="2" scope="col">Câmpus</th>
@@ -114,7 +115,7 @@
     <section class="tabela">
       <div class="tabela">
         <h1>Fator de Capacidade (%)</h1>
-        <table>
+        <table class="table table-bordered table-dark">
           <thead>
             <tr>
               <th rowspan="2" scope="col">Câmpus</th>
@@ -208,7 +209,7 @@
     <section class="tabela">
       <div class="tabela">
         <h1>Produtividade (kWh/kWp)</h1>
-        <table>
+        <table class="table table-bordered table-dark">
           <thead>
             <tr>
               <th rowspan="2" scope="col">Câmpus</th>
@@ -302,7 +303,7 @@
     <section class="tabela">
       <div class="tabela">
         <h1>Taxa de desempenho (%)</h1>
-        <table>
+        <table class="table table-bordered table-dark">
           <thead>
             <tr>
               <th rowspan="2" scope="col">Câmpus</th>
