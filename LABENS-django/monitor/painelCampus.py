@@ -70,8 +70,8 @@ def painel(request,campus):
     StationTypes = ['SONDA','EPE']
     StationType = StationTypes[campus.estTipo]
 
-    radFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_01.DAT'
-    metFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.DAT'
+    radFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_01.csv'
+    metFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
@@ -113,24 +113,37 @@ def painel(request,campus):
             #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
-                #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
-                if row[6] != 'NAN':
-                    irradianciaGraf['Global'].append(row[6])
-                else:
-                    irradianciaGraf['Global'].append(0)
-
-                if row[32] != 'NAN':
-                    irradianciaGraf['Inclinado'].append(row[32])
-                else:
-                    irradianciaGraf['Inclinado'].append(0)
-
-                irradiancia[0]['valor'] = float(row[32]) #Plano Inclinado
-                irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
-
                 #Caso seja SONDA
                 if campus.estTipo == 0:
-                    irradiancia[2]['valor'] = float(row[10]) #Direta Normal
+                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
+                    if row[6] != 'NAN':
+                        irradianciaGraf['Global'].append(row[6])
+                    else:
+                        irradianciaGraf['Global'].append(0)
+
+                    if row[10] != 'NAN':
+                        irradianciaGraf['Inclinado'].append(row[10])
+                    else:
+                        irradianciaGraf['Inclinado'].append(0)
+
+                    irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
+                    irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
+                    irradiancia[2]['valor'] = float(row[18]) #Direta Normal
                     irradiancia[3]['valor'] = float(row[14]) #Difusa
+                else:
+                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
+                    if row[6] != 'NAN':
+                        irradianciaGraf['Global'].append(row[6])
+                    else:
+                        irradianciaGraf['Global'].append(0)
+
+                    if row[10] != 'NAN':
+                        irradianciaGraf['Inclinado'].append(row[10])
+                    else:
+                        irradianciaGraf['Inclinado'].append(0)
+
+                    irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
+                    irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
 
         datRad.close()
 
@@ -145,14 +158,18 @@ def painel(request,campus):
         next(reader)
         next(reader)
         for row in reader:
-            dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
-            dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
-            dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
-
             if campus.estTipo == 0:
+                dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
+                dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
+                dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
                 dadosMeteorologicos[3]['valor'] = float(row[10]) #Dir Vento
                 dadosMeteorologicos[4]['valor'] = float(row[16]) #Pressão
                 dadosMeteorologicos[5]['valor'] = float(row[17]) #Pluviosidade
+            else:
+                dadosMeteorologicos[0]['valor'] = float(row[10]) #T Ambiente
+                dadosMeteorologicos[1]['valor'] = float(row[11]) #Umidade
+                dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
+
 
         datMet.close()
 
