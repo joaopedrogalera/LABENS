@@ -74,7 +74,7 @@ def painel(request,campus):
     metFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
-    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
+    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
     finalTime = initialTime + datetime.timedelta(days=1)
 
     #Inicializa variaveis que serão renderizadas na página
@@ -113,37 +113,24 @@ def painel(request,campus):
             #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
+                #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
+                if row[6] != 'NAN':
+                    irradianciaGraf['Global'].append(row[6])
+                else:
+                    irradianciaGraf['Global'].append(0)
+
+                if row[10] != 'NAN':
+                    irradianciaGraf['Inclinado'].append(row[10])
+                else:
+                    irradianciaGraf['Inclinado'].append(0)
+
+                irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
+                irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
+
                 #Caso seja SONDA
                 if campus.estTipo == 0:
-                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
-                    if row[6] != 'NAN':
-                        irradianciaGraf['Global'].append(row[6])
-                    else:
-                        irradianciaGraf['Global'].append(0)
-
-                    if row[10] != 'NAN':
-                        irradianciaGraf['Inclinado'].append(row[10])
-                    else:
-                        irradianciaGraf['Inclinado'].append(0)
-
-                    irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
-                    irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
                     irradiancia[2]['valor'] = float(row[18]) #Direta Normal
                     irradiancia[3]['valor'] = float(row[14]) #Difusa
-                else:
-                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
-                    if row[6] != 'NAN':
-                        irradianciaGraf['Global'].append(row[6])
-                    else:
-                        irradianciaGraf['Global'].append(0)
-
-                    if row[10] != 'NAN':
-                        irradianciaGraf['Inclinado'].append(row[10])
-                    else:
-                        irradianciaGraf['Inclinado'].append(0)
-
-                    irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
-                    irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
 
         datRad.close()
 
