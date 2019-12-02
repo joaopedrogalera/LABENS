@@ -72,6 +72,7 @@ def painel(request,campus):
 
     radFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_01.csv'
     metFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.csv'
+    cmpFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_COMPLEMENTAR.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
@@ -89,6 +90,13 @@ def painel(request,campus):
     irradiancia = [
         {'titulo':'Plano Inclinado','valor':'N/D'},
         {'titulo':'Global Horizontal','valor':'N/D'}
+    ]
+
+    painelTemp = [
+        {'tecnologia':'Monocristalino','temp':'N/D'},
+        {'tecnologia':'Policristalino','temp':'N/D'},
+        {'tecnologia':'CdTe','temp':'N/D'},
+        {'tecnologia':'CIGS','temp':'N/D'}
     ]
 
     #Adiciona campos extras para estações SONDA
@@ -160,6 +168,24 @@ def painel(request,campus):
 
         datMet.close()
 
+    #Dados de temperatura dos paineis
+    if os.path.isfile(cmpFile):
+        datCmp = open(cmpFile, newline='')
+        reader = csv.reader(datCmp, delimiter=',')
+        #Pula as primeiras quatro linhas do arquivo
+        next(reader)
+        next(reader)
+        next(reader)
+        next(reader)
+        for row in reader:
+            painelTemp[0]['temp'] = float(row[6]) #Monocristalino
+            painelTemp[1]['temp'] = float(row[10]) #Policristalino
+            painelTemp[2]['temp'] = float(row[18]) #CdTe
+            painelTemp[3]['temp'] = float(row[14]) #CIGS
+
+
+        datCmp.close()
+
     context = {'campus':campus,
                 'estTipo': StationType,
                 'mono1':mono1,
@@ -170,6 +196,7 @@ def painel(request,campus):
                 'cigs':cigs,
                 'irradianciaGraf':irradianciaGraf,
                 'dadosMeteorologicos':dadosMeteorologicos,
-                'irradiancia':irradiancia}
+                'irradiancia':irradiancia,
+                'painelTemp':painelTemp}
 
     return render(request,'painelCampus.html',context)

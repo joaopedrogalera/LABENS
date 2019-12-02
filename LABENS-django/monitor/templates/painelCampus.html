@@ -19,7 +19,7 @@
         <img src="{% static 'img/copel.png' %}" alt="Logo COPEL" title="COPEL" />
         <img src="{% static 'img/labens.png' %}" alt="Logo LABENS" title="LABENS" />
       </div>
-      <h1>Câmpus {{ campus.nome }}</h1>
+      <h1><span>Estação de Pesquisa em Energia Solar - </span>EPESol  {{ campus.nome }}</h1>
       <img class="campus" src="{% static 'img/campi/'|add:campus.cod|add:'.jpg' %}" alt="Vista Usina Campus {{ campus.nome }}" title="Vista Usina Campus {{ campus.nome }}" />
     </header>
     <aside>
@@ -41,6 +41,15 @@
             <td>{{ row.valor }} W/m<sup>2</sup></td>
           </tr>
         {% endfor %}
+      </table>
+      <h2>Temperatura dos paineis</h2>
+      <table class="table table-sm table-dark temp-painel">
+          {% for row in painelTemp %}
+          <tr>
+            <th scope="row">{{ row.tecnologia }}</th>
+            <td>{{ row.temp }} °C</td>
+          </tr>
+          {% endfor %}
       </table>
     </aside>
   </div>
