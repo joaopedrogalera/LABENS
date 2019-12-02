@@ -149,7 +149,7 @@ table.temp-painel th, table.temp-painel td{
   }
 }
 
-@media screen and (min-width: 680px) and (max-height: 730px){
+@media screen and (min-width: 680px) and (max-height: 680px){
   .lateral{
     overflow: scroll;
   }
