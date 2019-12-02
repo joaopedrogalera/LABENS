@@ -35,7 +35,7 @@ body{
 }
 
 img.campus{
-  width: 75%;
+  width: 73%;
   margin: 0 auto;
   display: block;
 }
@@ -58,7 +58,7 @@ img.campus{
 }
 
 .lateral aside table th, .lateral aside table td{
-  padding: 3px;
+  padding: 2px;
 }
 
 table.temp-painel tr{
