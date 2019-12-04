@@ -122,7 +122,7 @@ table.temp-painel th, table.temp-painel td{
   }
 
   .lateral header h1 span{
-    display: inline;
+    display: block;
   }
 
   .graficos{

@@ -10,12 +10,8 @@ import ipaddress
 # Create your views here.
 
 def index(request):
-    sessao = request.session.get('status', 0)
-
-    if sessao:
-        return render(request,'index.html')
-    else:
-        return redirect('/login?'+urlencode({'redirect':'/'}))
+    return redirect('/painelCampus')
+    #return render(request,'index.html')
 
 @csrf_exempt
 def login(request):
@@ -55,21 +51,11 @@ def login(request):
             return redirect('/')
 
 def selectCampus(request):
-    sessao = request.session.get('status', 0)
-
-    if sessao:
-        campi = Campus.objects.all()
-        return render(request,'painelSelecCampus.html',{'campi':campi})
-    else:
-        return redirect('/login?'+urlencode({'redirect':'/painelCampus'}))
+    campi = Campus.objects.all()
+    return render(request,'painelSelecCampus.html',{'campi':campi})
 
 def showPainelCampus(request,campus):
-    sessao = request.session.get('status', 0)
-
-    if sessao:
-        return painelCampus.painel(request,campus)
-    else:
-        return redirect('/login?'+urlencode({'redirect':'/painelCampus/'+campus}))
+    return painelCampus.painel(request,campus)
 
 def indicesDeMerito(request):
     sessao = request.session.get('status', 0)
