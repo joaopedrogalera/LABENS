@@ -4,7 +4,7 @@ body{
   padding: 0;
 }
 
-nav, section, header{
+nav, section, header, footer{
   width: 100%;
   max-width: 600px;
   margin: 15px auto;
@@ -16,7 +16,7 @@ header{
   text-align: center;
 }
 
-header img{
+header img, footer img{
   height: 50px;
   margin: 15px;
 }
@@ -38,4 +38,27 @@ section form{
 
 section form input{
   margin-bottom: 15px;
+}
+
+footer p{
+  font-family: "times new roman";
+  padding: 5px;
+  font-size: 13px;
+}
+
+footer .footer-logo{
+  text-align: center;
+  vertical-align: bottom;
+}
+
+footer img[title="ANEEL"]{
+  height: 100px;
+}
+
+footer img[title="ANEEL"]{
+  height: 100px;
+}
+
+footer img[title="LABREN"]{
+  height: 75px;
 }
