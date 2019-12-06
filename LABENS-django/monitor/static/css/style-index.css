@@ -21,6 +21,10 @@ header img, footer img{
   margin: 15px;
 }
 
+header h1{
+  font-size: 25px;
+}
+
 nav ul{
   list-style-type: none;
   padding: 0;
@@ -44,6 +48,7 @@ footer p{
   font-family: "times new roman";
   padding: 5px;
   font-size: 14px;
+  text-align: justify;
 }
 
 footer .footer-logo{
