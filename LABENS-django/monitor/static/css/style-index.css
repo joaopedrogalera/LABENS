@@ -43,7 +43,7 @@ section form input{
 footer p{
   font-family: "times new roman";
   padding: 5px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 footer .footer-logo{
@@ -59,6 +59,6 @@ footer img[title="ANEEL"]{
   height: 100px;
 }
 
-footer img[title="LABREN"]{
-  height: 75px;
+footer img[title="LABREN"], footer img[title="INPE"]{
+  height: 65px;
 }
