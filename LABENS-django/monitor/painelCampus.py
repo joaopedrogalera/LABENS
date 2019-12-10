@@ -103,7 +103,7 @@ def painel(request,campus):
     if campus.estTipo == 0:
         dadosMeteorologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
         dadosMeteorologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
-        dadosMeteorologicos.append({'titulo':'Pluviosidade','valor':'N/D','unidade':'mm'})
+        dadosMeteorologicos.append({'titulo':'Pluviosidade do dia','valor':'N/D','unidade':'mm'})
 
         irradiancia.append({'titulo':'Direta Normal','valor':'N/D'})
         irradiancia.append({'titulo':'Difusa','valor':'N/D'})
@@ -147,23 +147,31 @@ def painel(request,campus):
     if os.path.isfile(metFile):
         datMet = open(metFile, newline='')
         reader = csv.reader(datMet, delimiter=',')
+
+        #Inicializa a pluviosidade com 0
+        if campus.estTipo == 0:
+            dadosMeteorologicos[5]['valor'] = float(0)
+
         #Pula as primeiras quatro linhas do arquivo
         next(reader)
         next(reader)
         next(reader)
         next(reader)
         for row in reader:
-            if campus.estTipo == 0:
-                dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
-                dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
-                dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
-                dadosMeteorologicos[3]['valor'] = float(row[10]) #Dir Vento
-                dadosMeteorologicos[4]['valor'] = float(row[16]) #Pressão
-                dadosMeteorologicos[5]['valor'] = float(row[17]) #Pluviosidade
-            else:
-                dadosMeteorologicos[0]['valor'] = float(row[10]) #T Ambiente
-                dadosMeteorologicos[1]['valor'] = float(row[11]) #Umidade
-                dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
+            #Vê a data da entrada e só pega as do dia
+            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
+            if entrydate >= initialTime and entrydate <= finalTime:
+                if campus.estTipo == 0:
+                    dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
+                    dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
+                    dadosMeteorologicos[3]['valor'] = float(row[10]) #Dir Vento
+                    dadosMeteorologicos[4]['valor'] = float(row[16]) #Pressão
+                    dadosMeteorologicos[5]['valor'] += float(row[17]) #Pluviosidade
+                else:
+                    dadosMeteorologicos[0]['valor'] = float(row[10]) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = float(row[11]) #Umidade
+                    dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
 
 
         datMet.close()
