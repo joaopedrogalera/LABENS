@@ -180,6 +180,9 @@ def painel(request,campus):
 
                 ambTimestamp['meteorologicos'] = entrydate
 
+            if campus.estTipo == 0:
+                dadosMeteorologicos[5]['valor'] = round(dadosMeteorologicos[5]['valor'],1)
+
 
         datMet.close()
 
