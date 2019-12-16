@@ -24,7 +24,7 @@
     </header>
     <aside>
       <h1>Estação {{ estTipo }}</h1>
-      <h2>Dados Meteorológicos</h2>
+      <h2>Dados Meteorológicos - {{ ambTimestamp.meteorologicos|date:'d/m/Y H:i' }} (UTC)</h2>
       <table class="table table-sm table-dark">
         {% for row in dadosMeteorologicos %}
           <tr>
@@ -33,7 +33,7 @@
           </tr>
         {% endfor %}
       </table>
-      <h2>Dados Radiométricos (irradiância)</h2>
+      <h2>Dados Radiométricos (irradiância) - {{ ambTimestamp.irradiancia|date:'d/m/Y H:i' }} (UTC)</h2>
       <table class="table table-sm table-dark">
         {% for row in irradiancia %}
           <tr>
@@ -42,7 +42,7 @@
           </tr>
         {% endfor %}
       </table>
-      <h2>Temperatura dos paineis</h2>
+      <h2>Temperatura dos paineis - {{ ambTimestamp.paineis|date:'d/m/Y H:i' }} (UTC)</h2>
       <table class="table table-sm table-dark temp-painel">
           {% for row in painelTemp %}
           <tr>
@@ -94,7 +94,7 @@
         labels: HorasLabel,
         datasets: [
           {
-            label: 'Monocristalino 1 - {% if not mono1.Erro %}{{ mono1.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'Monocristalino 1 - {% if not mono1.Erro %}{{ mono1.Inst }}W{% else %}ERRO!!{% endif %} - {{ mono1.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(83,157,182,1)',
             backgroundColor: 'rgba(83,157,182,1)',
@@ -103,7 +103,7 @@
             borderWidth: 1
           },
           {
-            label: 'Monocristalino 2 - {% if not mono2.Erro %}{{ mono2.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'Monocristalino 2 - {% if not mono2.Erro %}{{ mono2.Inst }}W{% else %}ERRO!!{% endif %} - {{ mono2.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(186,28,27,1)',
             backgroundColor: 'rgba(186,28,27,1)',
@@ -139,7 +139,7 @@
         labels: HorasLabel,
         datasets: [
           {
-            label: 'Policristalino 1 - {% if not poli1.Erro %}{{ poli1.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'Policristalino 1 - {% if not poli1.Erro %}{{ poli1.Inst }}W{% else %}ERRO!!{% endif %} - {{ poli1.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(83,157,182,1)',
             backgroundColor: 'rgba(83,157,182,1)',
@@ -148,7 +148,7 @@
             borderWidth: 1
           },
           {
-            label: 'Policristalino 2 - {% if not poli2.Erro %}{{ poli2.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'Policristalino 2 - {% if not poli2.Erro %}{{ poli2.Inst }}W{% else %}ERRO!!{% endif %} - {{ poli2.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(186,28,27,1)',
             backgroundColor: 'rgba(186,28,27,1)',
@@ -184,7 +184,7 @@
         labels: HorasLabel,
         datasets: [
           {
-            label: 'CdTe - {% if not cdte.Erro %}{{ cdte.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'CdTe - {% if not cdte.Erro %}{{ cdte.Inst }}W{% else %}ERRO!!{% endif %} - {{ cdte.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(118,114,111,1)',
             backgroundColor: 'rgba(118,114,111,1)',
@@ -193,7 +193,7 @@
             borderWidth: 1
           },
           {
-            label: 'CIGS - {% if not cigs.Erro %}{{ cigs.Inst }}W{% else %}ERRO!!{% endif %}',
+            label: 'CIGS - {% if not cigs.Erro %}{{ cigs.Inst }}W{% else %}ERRO!!{% endif %} - {{ cigs.Timestamp|date:'d/m/Y H:i' }} (UTC)',
             fill: false,
             borderColor: 'rgba(16,174,89,1)',
             backgroundColor: 'rgba(16,174,89,1)',

@@ -8,7 +8,7 @@ from . import paths
 from django.http import HttpResponse
 
 def ProcessaCSV(arquivo):
-    retorno = {'Geracao':[],'Inst': 0, 'Erro': 0}
+    retorno = {'Geracao':[],'Inst': 0, 'Erro': 0, 'Timestamp':''}
 
     data = datetime.datetime.now()
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
@@ -33,6 +33,7 @@ def ProcessaCSV(arquivo):
                     retorno['Inst'] = retorno['Geracao'][len(retorno['Geracao'])-1]
 
                 retorno['Geracao'].append(retorno['Inst'])
+                retorno['Timestamp'] = entrydate
 
         if status == '2':
             retorno['Erro'] = 1
@@ -99,6 +100,8 @@ def painel(request,campus):
         {'tecnologia':'CIGS','temp':'N/D'}
     ]
 
+    ambTimestamp = {'irradiancia':'','meteorologicos':'','paineis':''}
+
     #Adiciona campos extras para estações SONDA
     if campus.estTipo == 0:
         dadosMeteorologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
@@ -132,13 +135,15 @@ def painel(request,campus):
                 else:
                     irradianciaGraf['Inclinado'].append(0)
 
-                irradiancia[0]['valor'] = float(row[10]) #Plano Inclinado
-                irradiancia[1]['valor'] = float(row[6]) #Global Horizontal
+                irradiancia[0]['valor'] = round(float(row[10]),1) #Plano Inclinado
+                irradiancia[1]['valor'] = round(float(row[6]),1) #Global Horizontal
 
                 #Caso seja SONDA
                 if campus.estTipo == 0:
-                    irradiancia[2]['valor'] = float(row[18]) #Direta Normal
-                    irradiancia[3]['valor'] = float(row[14]) #Difusa
+                    irradiancia[2]['valor'] = round(float(row[18]),1) #Direta Normal
+                    irradiancia[3]['valor'] = round(float(row[14]),1) #Difusa
+
+                ambTimestamp['irradiancia'] = entrydate
 
         datRad.close()
 
@@ -162,16 +167,18 @@ def painel(request,campus):
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
-                    dadosMeteorologicos[0]['valor'] = float(row[14]) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = float(row[15]) #Umidade
-                    dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
-                    dadosMeteorologicos[3]['valor'] = float(row[10]) #Dir Vento
-                    dadosMeteorologicos[4]['valor'] = float(row[16]) #Pressão
+                    dadosMeteorologicos[0]['valor'] = round(float(row[14]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[15]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
+                    dadosMeteorologicos[3]['valor'] = round(float(row[10]),1) #Dir Vento
+                    dadosMeteorologicos[4]['valor'] = round(float(row[16]),1) #Pressão
                     dadosMeteorologicos[5]['valor'] += float(row[17]) #Pluviosidade
                 else:
-                    dadosMeteorologicos[0]['valor'] = float(row[10]) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = float(row[11]) #Umidade
-                    dadosMeteorologicos[2]['valor'] = float(row[6]) #V Vento
+                    dadosMeteorologicos[0]['valor'] = round(float(row[10]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[11]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
+
+                ambTimestamp['meteorologicos'] = entrydate
 
 
         datMet.close()
@@ -186,10 +193,12 @@ def painel(request,campus):
         next(reader)
         next(reader)
         for row in reader:
-            painelTemp[0]['temp'] = float(row[6]) #Monocristalino
-            painelTemp[1]['temp'] = float(row[10]) #Policristalino
-            painelTemp[2]['temp'] = float(row[18]) #CdTe
-            painelTemp[3]['temp'] = float(row[14]) #CIGS
+            painelTemp[0]['temp'] = round(float(row[6]),1) #Monocristalino
+            painelTemp[1]['temp'] = round(float(row[10]),1) #Policristalino
+            painelTemp[2]['temp'] = round(float(row[18]),1) #CdTe
+            painelTemp[3]['temp'] = round(float(row[14]),1) #CIGS
+
+        ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
 
 
         datCmp.close()
@@ -205,6 +214,7 @@ def painel(request,campus):
                 'irradianciaGraf':irradianciaGraf,
                 'dadosMeteorologicos':dadosMeteorologicos,
                 'irradiancia':irradiancia,
-                'painelTemp':painelTemp}
+                'painelTemp':painelTemp,
+                'ambTimestamp':ambTimestamp}
 
     return render(request,'painelCampus.html',context)
