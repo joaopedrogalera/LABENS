@@ -51,6 +51,7 @@ def painel(request,campus):
     data = datetime.datetime.now()
 
     #Arquivos de geração do dia
+    csvPrefix = paths.Ftp()+data.strftime("%Y")+'/'+data.strftime("%m")
     csvInvPrefix = paths.Dropbox()+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
 
     mono1File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
@@ -71,9 +72,11 @@ def painel(request,campus):
     StationTypes = ['SONDA','EPE']
     StationType = StationTypes[campus.estTipo]
 
-    radFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_01.csv'
-    metFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_RAD_10.csv'
-    cmpFile = paths.Ftp()+campus.cod.upper()+'_'+StationType+'/TAB_COMPLEMENTAR.csv'
+    csvDatPrefix = csvPrefix+'/dataloggers/'
+
+    radFile = csvDatPrefix+'rad01/dat_'+StationType.lower()+'_'+campus.cod+'_rad01_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    metFile = csvDatPrefix+'rad10/dat_'+StationType.lower()+'_'+campus.cod+'_rad10_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cmpFile = csvDatPrefix+'compl/dat_'+StationType.lower()+'_'+campus.cod+'_compl_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
@@ -126,22 +129,22 @@ def painel(request,campus):
             if entrydate >= initialTime and entrydate <= finalTime:
                 #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                 if row[6] != 'NAN':
-                    irradianciaGraf['Global'].append(row[6])
+                    irradianciaGraf['Global'].append(row[3])
                 else:
                     irradianciaGraf['Global'].append(0)
 
                 if row[10] != 'NAN':
-                    irradianciaGraf['Inclinado'].append(row[10])
+                    irradianciaGraf['Inclinado'].append(row[7])
                 else:
                     irradianciaGraf['Inclinado'].append(0)
 
-                irradiancia[0]['valor'] = round(float(row[10]),1) #Plano Inclinado
-                irradiancia[1]['valor'] = round(float(row[6]),1) #Global Horizontal
+                irradiancia[0]['valor'] = round(float(row[7]),1) #Plano Inclinado
+                irradiancia[1]['valor'] = round(float(row[3]),1) #Global Horizontal
 
                 #Caso seja SONDA
                 if campus.estTipo == 0:
-                    irradiancia[2]['valor'] = round(float(row[18]),1) #Direta Normal
-                    irradiancia[3]['valor'] = round(float(row[14]),1) #Difusa
+                    irradiancia[2]['valor'] = round(float(row[15]),1) #Direta Normal
+                    irradiancia[3]['valor'] = round(float(row[11]),1) #Difusa
 
                 ambTimestamp['irradiancia'] = entrydate
 
@@ -167,16 +170,16 @@ def painel(request,campus):
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[14]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[15]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
-                    dadosMeteorologicos[3]['valor'] = round(float(row[10]),1) #Dir Vento
-                    dadosMeteorologicos[4]['valor'] = round(float(row[16]),1) #Pressão
-                    dadosMeteorologicos[5]['valor'] += float(row[17]) #Pluviosidade
+                    dadosMeteorologicos[0]['valor'] = round(float(row[11]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[12]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[3]),1) #V Vento
+                    dadosMeteorologicos[3]['valor'] = round(float(row[7]),1) #Dir Vento
+                    dadosMeteorologicos[4]['valor'] = round(float(row[13]),1) #Pressão
+                    dadosMeteorologicos[5]['valor'] += float(row[14]) #Pluviosidade
                 else:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[10]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[11]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
+                    dadosMeteorologicos[0]['valor'] = round(float(row[7]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[8]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[3]),1) #V Vento
 
                 ambTimestamp['meteorologicos'] = entrydate
 
@@ -196,10 +199,10 @@ def painel(request,campus):
         next(reader)
         next(reader)
         for row in reader:
-            painelTemp[0]['temp'] = round(float(row[6]),1) #Monocristalino
-            painelTemp[1]['temp'] = round(float(row[10]),1) #Policristalino
-            painelTemp[2]['temp'] = round(float(row[18]),1) #CdTe
-            painelTemp[3]['temp'] = round(float(row[14]),1) #CIGS
+            painelTemp[0]['temp'] = round(float(row[3]),1) #Monocristalino
+            painelTemp[1]['temp'] = round(float(row[7]),1) #Policristalino
+            painelTemp[2]['temp'] = round(float(row[15]),1) #CdTe
+            painelTemp[3]['temp'] = round(float(row[11]),1) #CIGS
 
         ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
 
