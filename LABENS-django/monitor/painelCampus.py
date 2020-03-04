@@ -125,7 +125,7 @@ def painel(request,campus):
         next(reader)
         for row in reader:
             #Vê a data da entrada e só pega as do dia
-            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
+            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
                 #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                 if row[6] != 'NAN':
@@ -167,7 +167,7 @@ def painel(request,campus):
         next(reader)
         for row in reader:
             #Vê a data da entrada e só pega as do dia
-            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
+            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
                     dadosMeteorologicos[0]['valor'] = round(float(row[10]),1) #T Ambiente
@@ -204,7 +204,7 @@ def painel(request,campus):
             painelTemp[2]['temp'] = round(float(row[14]),1) #CdTe
             painelTemp[3]['temp'] = round(float(row[10]),1) #CIGS
 
-        ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
+        ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
 
 
         datCmp.close()
