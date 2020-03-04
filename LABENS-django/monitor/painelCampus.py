@@ -128,12 +128,12 @@ def painel(request,campus):
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
                 #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
-                if row[6] != 'NAN':
+                if row[2] != 'NAN':
                     irradianciaGraf['Global'].append(row[2])
                 else:
                     irradianciaGraf['Global'].append(0)
 
-                if row[10] != 'NAN':
+                if row[6] != 'NAN':
                     irradianciaGraf['Inclinado'].append(row[6])
                 else:
                     irradianciaGraf['Inclinado'].append(0)
