@@ -129,22 +129,22 @@ def painel(request,campus):
             if entrydate >= initialTime and entrydate <= finalTime:
                 #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                 if row[6] != 'NAN':
-                    irradianciaGraf['Global'].append(row[3])
+                    irradianciaGraf['Global'].append(row[2])
                 else:
                     irradianciaGraf['Global'].append(0)
 
                 if row[10] != 'NAN':
-                    irradianciaGraf['Inclinado'].append(row[7])
+                    irradianciaGraf['Inclinado'].append(row[6])
                 else:
                     irradianciaGraf['Inclinado'].append(0)
 
-                irradiancia[0]['valor'] = round(float(row[7]),1) #Plano Inclinado
-                irradiancia[1]['valor'] = round(float(row[3]),1) #Global Horizontal
+                irradiancia[0]['valor'] = round(float(row[6]),1) #Plano Inclinado
+                irradiancia[1]['valor'] = round(float(row[2]),1) #Global Horizontal
 
                 #Caso seja SONDA
                 if campus.estTipo == 0:
-                    irradiancia[2]['valor'] = round(float(row[15]),1) #Direta Normal
-                    irradiancia[3]['valor'] = round(float(row[11]),1) #Difusa
+                    irradiancia[2]['valor'] = round(float(row[14]),1) #Direta Normal
+                    irradiancia[3]['valor'] = round(float(row[10]),1) #Difusa
 
                 ambTimestamp['irradiancia'] = entrydate
 
@@ -170,16 +170,16 @@ def painel(request,campus):
             entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[11]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[12]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[3]),1) #V Vento
-                    dadosMeteorologicos[3]['valor'] = round(float(row[7]),1) #Dir Vento
-                    dadosMeteorologicos[4]['valor'] = round(float(row[13]),1) #Pressão
-                    dadosMeteorologicos[5]['valor'] += float(row[14]) #Pluviosidade
+                    dadosMeteorologicos[0]['valor'] = round(float(row[10]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[11]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[2]),1) #V Vento
+                    dadosMeteorologicos[3]['valor'] = round(float(row[3]),1) #Dir Vento
+                    dadosMeteorologicos[4]['valor'] = round(float(row[12]),1) #Pressão
+                    dadosMeteorologicos[5]['valor'] += float(row[13]) #Pluviosidade
                 else:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[7]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[8]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[3]),1) #V Vento
+                    dadosMeteorologicos[0]['valor'] = round(float(row[6]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[7]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[2]),1) #V Vento
 
                 ambTimestamp['meteorologicos'] = entrydate
 
@@ -199,10 +199,10 @@ def painel(request,campus):
         next(reader)
         next(reader)
         for row in reader:
-            painelTemp[0]['temp'] = round(float(row[3]),1) #Monocristalino
-            painelTemp[1]['temp'] = round(float(row[7]),1) #Policristalino
-            painelTemp[2]['temp'] = round(float(row[15]),1) #CdTe
-            painelTemp[3]['temp'] = round(float(row[11]),1) #CIGS
+            painelTemp[0]['temp'] = round(float(row[2]),1) #Monocristalino
+            painelTemp[1]['temp'] = round(float(row[6]),1) #Policristalino
+            painelTemp[2]['temp'] = round(float(row[14]),1) #CdTe
+            painelTemp[3]['temp'] = round(float(row[10]),1) #CIGS
 
         ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%d %H:%M:%S')
 
