@@ -15,10 +15,10 @@ def ProcessaCSV(arquivo):
 
     if os.path.isfile(arquivo):
         csvFile = open(arquivo, newline='')
-        reader = csv.reader((x.replace('\0', '') for x in csvFile), delimiter='	') #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
+        reader = csv.reader((x.replace('\0', '') for x in csvFile)) #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
 
         status = 1
-
+        next(reader)
         for row in reader:
             entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
             if entrydate >= initialTime:
@@ -52,14 +52,14 @@ def painel(request,campus):
 
     #Arquivos de geração do dia
     csvPrefix = paths.Ftp()+data.strftime("%Y")+'/'+data.strftime("%m")
-    csvInvPrefix = paths.Dropbox()+'Aplicativos/LABENS-scada/leituras/'+data.strftime("%Y")+'/'+data.strftime("%m")+'/inversores/'
+    csvInvPrefix = csvPrefix+'/inversores/'
 
-    mono1File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    mono2File = csvInvPrefix+'mono/inv-2'+str(campus.id)+'a02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    poli1File = csvInvPrefix+'poli/inv-2'+str(campus.id)+'b01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    poli2File = csvInvPrefix+'poli/inv-2'+str(campus.id)+'b02_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cdteFile = csvInvPrefix+'cdte/inv-1'+str(campus.id)+'c01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cigsFile = csvInvPrefix+'cigs/inv-1'+str(campus.id)+'d01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    mono1File = csvInvPrefix+'mono/inv_3k0_'+campus.cod+'_mono_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    mono2File = csvInvPrefix+'mono/inv_3k0_'+campus.cod+'_mono_01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    poli1File = csvInvPrefix+'poli/inv_3k0_'+campus.cod+'_poli_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    poli2File = csvInvPrefix+'poli/inv_3k0_'+campus.cod+'_poli_01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cdteFile = csvInvPrefix+'cdte/inv_1k5_'+campus.cod+'_cdte_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cigsFile = csvInvPrefix+'cigs/inv_1k5_'+campus.cod+'_cigs_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     mono1 = ProcessaCSV(mono1File)
     mono2 = ProcessaCSV(mono2File)
