@@ -18,7 +18,13 @@ def ProcessaCSV(arquivo):
         reader = csv.reader((x.replace('\0', '') for x in csvFile)) #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
 
         status = 1
-        next(reader)
+        
+        try:
+            next(reader)
+        except:
+            retorno['Erro'] = 1
+            return retorno
+
         for row in reader:
             entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
             if entrydate >= initialTime:
