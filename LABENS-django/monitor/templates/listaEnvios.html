@@ -1,0 +1,35 @@
+{% load static %}
+{% load l10n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LABENS</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style-index.css' %}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Atualização dos arquivos</h1>
+  {% for campus in leituras %}
+    <h2>{{ campus.campus }}</h2>
+    <table class="table table-striped">
+    <tr>
+      <th scope="col">Arquivo</th>
+      <th scope="col">Ultima verificação (UTC)</th>
+      <th scope="col">Tempo sem atualização (s)</th>
+    </tr>
+    {% for tabela in campus.tabelas %}
+    <tr>
+      <td>{{ tabela.file }}</td>
+      <td>{{ tabela.measure_time }}</td>
+      <td>{{ tabela.last_update }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+  {% endfor %}
+  </div>
+</body>
+</html>

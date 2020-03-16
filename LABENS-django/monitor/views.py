@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils.http import urlencode
 from . import painelCampus
+from . import envios
 from .models import Campus
 from .models import FaixasIP
 from django.views.decorators.csrf import csrf_exempt
@@ -64,3 +65,11 @@ def indicesDeMerito(request):
         return render(request,'indicesDeMerito.html')
     else:
         return redirect('/login?'+urlencode({'redirect':'/indicesDeMerito'}))
+
+def listaEnvios(request):
+    sessao = request.session.get('status', 0)
+
+    if sessao:
+        return envios.listaEnvios(request)
+    else:
+        return redirect('/login?'+urlencode({'redirect':'/envios'}))
