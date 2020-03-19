@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 import datetime
 
 def listaEnvios(request):
-    DBPath = '/home/joaopedro/database.db'
+    DBPath = 'database.db'
 
     conn = sqlite3.connect(DBPath)
 

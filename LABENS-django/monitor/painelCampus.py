@@ -18,7 +18,7 @@ def ProcessaCSV(arquivo):
         reader = csv.reader((x.replace('\0', '') for x in csvFile)) #As vezes algums linha vem com uns NULL no meio e o sistema trava. O replace e o for tratam isso
 
         status = 1
-        
+
         try:
             next(reader)
         except:
@@ -82,7 +82,7 @@ def painel(request,campus):
 
     radFile = csvDatPrefix+'rad01/dat_'+StationType.lower()+'_'+campus.cod+'_rad01_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     metFile = csvDatPrefix+'rad10/dat_'+StationType.lower()+'_'+campus.cod+'_rad10_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cmpFile = csvDatPrefix+'compl/dat_'+StationType.lower()+'_'+campus.cod+'_compl_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    tmpFile = csvDatPrefix+'temps/dat_'+StationType.lower()+'_'+campus.cod+'_temps_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
@@ -131,26 +131,38 @@ def painel(request,campus):
         next(reader)
         for row in reader:
             #Vê a data da entrada e só pega as do dia
-            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
+            entrydate = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
-                #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
-                if row[2] != 'NAN':
-                    irradianciaGraf['Global'].append(row[2])
-                else:
-                    irradianciaGraf['Global'].append(0)
+                if campus.estTipo == 0: #Se for SONDA
+                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
+                    if row[2] != 'NAN':
+                        irradianciaGraf['Global'].append(row[2])
+                    else:
+                        irradianciaGraf['Global'].append(0)
 
-                if row[6] != 'NAN':
-                    irradianciaGraf['Inclinado'].append(row[6])
-                else:
-                    irradianciaGraf['Inclinado'].append(0)
+                    if row[22] != 'NAN':
+                        irradianciaGraf['Inclinado'].append(row[22])
+                    else:
+                        irradianciaGraf['Inclinado'].append(0)
 
-                irradiancia[0]['valor'] = round(float(row[6]),1) #Plano Inclinado
-                irradiancia[1]['valor'] = round(float(row[2]),1) #Global Horizontal
+                    irradiancia[0]['valor'] = round(float(row[22]),1) #Plano Inclinado
+                    irradiancia[1]['valor'] = round(float(row[2]),1) #Global Horizontal
+                    irradiancia[2]['valor'] = round(float(row[10]),1) #Direta Normal
+                    irradiancia[3]['valor'] = round(float(row[6]),1) #Difusa
+                else: #Se for EPE
+                    #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
+                    if row[2] != 'NAN':
+                        irradianciaGraf['Global'].append(row[2])
+                    else:
+                        irradianciaGraf['Global'].append(0)
 
-                #Caso seja SONDA
-                if campus.estTipo == 0:
-                    irradiancia[2]['valor'] = round(float(row[14]),1) #Direta Normal
-                    irradiancia[3]['valor'] = round(float(row[10]),1) #Difusa
+                    if row[6] != 'NAN':
+                        irradianciaGraf['Inclinado'].append(row[6])
+                    else:
+                        irradianciaGraf['Inclinado'].append(0)
+
+                    irradiancia[0]['valor'] = round(float(row[6]),1) #Plano Inclinado
+                    irradiancia[1]['valor'] = round(float(row[2]),1) #Global Horizontal
 
                 ambTimestamp['irradiancia'] = entrydate
 
@@ -173,19 +185,19 @@ def painel(request,campus):
         next(reader)
         for row in reader:
             #Vê a data da entrada e só pega as do dia
-            entrydate = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
+            entrydate = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
                 if campus.estTipo == 0:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[10]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[11]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[2]),1) #V Vento
-                    dadosMeteorologicos[3]['valor'] = round(float(row[3]),1) #Dir Vento
-                    dadosMeteorologicos[4]['valor'] = round(float(row[12]),1) #Pressão
-                    dadosMeteorologicos[5]['valor'] += float(row[13]) #Pluviosidade
+                    dadosMeteorologicos[0]['valor'] = round(float(row[2]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[3]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
+                    dadosMeteorologicos[3]['valor'] = round(float(row[7]),1) #Dir Vento
+                    dadosMeteorologicos[4]['valor'] = round(float(row[4]),1) #Pressão
+                    dadosMeteorologicos[5]['valor'] += float(row[5]) #Pluviosidade
                 else:
-                    dadosMeteorologicos[0]['valor'] = round(float(row[6]),1) #T Ambiente
-                    dadosMeteorologicos[1]['valor'] = round(float(row[7]),1) #Umidade
-                    dadosMeteorologicos[2]['valor'] = round(float(row[2]),1) #V Vento
+                    dadosMeteorologicos[0]['valor'] = round(float(row[2]),1) #T Ambiente
+                    dadosMeteorologicos[1]['valor'] = round(float(row[3]),1) #Umidade
+                    dadosMeteorologicos[2]['valor'] = round(float(row[4]),1) #V Vento
 
                 ambTimestamp['meteorologicos'] = entrydate
 
@@ -196,9 +208,9 @@ def painel(request,campus):
         datMet.close()
 
     #Dados de temperatura dos paineis
-    if os.path.isfile(cmpFile):
-        datCmp = open(cmpFile, newline='')
-        reader = csv.reader(datCmp, delimiter=',')
+    if os.path.isfile(tmpFile):
+        datTmp = open(tmpFile, newline='')
+        reader = csv.reader(datTmp, delimiter=',')
         #Pula as primeiras quatro linhas do arquivo
         next(reader)
         next(reader)
@@ -210,10 +222,10 @@ def painel(request,campus):
             painelTemp[2]['temp'] = round(float(row[14]),1) #CdTe
             painelTemp[3]['temp'] = round(float(row[10]),1) #CIGS
 
-        ambTimestamp['paineis'] = datetime.datetime.strptime(row[0],'%Y-%m-%dT%H:%M:%SZ')
+        ambTimestamp['paineis'] = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
 
 
-        datCmp.close()
+        datTmp.close()
 
     context = {'campus':campus,
                 'estTipo': StationType,
