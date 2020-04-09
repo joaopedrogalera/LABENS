@@ -49,10 +49,24 @@ def ProcessaCSV(arquivo):
     return retorno
 
 def painel(request,campus):
+    if len(campus) > 2:
+        if campus[2] == '0':
+            estTipo = 0
+        elif campus[2] == '1':
+            estTipo = 1
+        else:
+            estTipo = ''
+        campus = campus[0] + campus[1]
+    else:
+        estTipo = ''
+
     try:
         campus = Campus.objects.get(cod=campus)
     except Campus.DoesNotExist:
         return redirect('/')
+
+    if estTipo == '':
+        estTipo = campus.estTipo
 
     data = datetime.datetime.now()
 
@@ -76,7 +90,7 @@ def painel(request,campus):
 
     #Dados Ambientais
     StationTypes = ['SONDA','EPE']
-    StationType = StationTypes[campus.estTipo]
+    StationType = StationTypes[estTipo]
 
     csvDatPrefix = csvPrefix+'/dataloggers/'
 
@@ -112,7 +126,7 @@ def painel(request,campus):
     ambTimestamp = {'irradiancia':'','meteorologicos':'','paineis':''}
 
     #Adiciona campos extras para estações SONDA
-    if campus.estTipo == 0:
+    if estTipo == 0:
         dadosMeteorologicos.append({'titulo':'Direção do Vento','valor':'N/D','unidade':'°'})
         dadosMeteorologicos.append({'titulo':'Pressão Atmosférica','valor':'N/D','unidade':'mbar'})
         dadosMeteorologicos.append({'titulo':'Pluviosidade do dia','valor':'N/D','unidade':'mm'})
@@ -133,7 +147,7 @@ def painel(request,campus):
             #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
-                if campus.estTipo == 0: #Se for SONDA
+                if estTipo == 0: #Se for SONDA
                     #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                     if row[2] != 'NAN':
                         irradianciaGraf['Global'].append(row[2])
@@ -175,7 +189,7 @@ def painel(request,campus):
         reader = csv.reader(datMet, delimiter=',')
 
         #Inicializa a pluviosidade com 0
-        if campus.estTipo == 0:
+        if estTipo == 0:
             dadosMeteorologicos[5]['valor'] = float(0)
 
         #Pula as primeiras quatro linhas do arquivo
@@ -187,7 +201,7 @@ def painel(request,campus):
             #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
             if entrydate >= initialTime and entrydate <= finalTime:
-                if campus.estTipo == 0:
+                if estTipo == 0:
                     dadosMeteorologicos[0]['valor'] = round(float(row[2]),1) #T Ambiente
                     dadosMeteorologicos[1]['valor'] = round(float(row[3]),1) #Umidade
                     dadosMeteorologicos[2]['valor'] = round(float(row[6]),1) #V Vento
@@ -201,7 +215,7 @@ def painel(request,campus):
 
                 ambTimestamp['meteorologicos'] = entrydate
 
-            if campus.estTipo == 0:
+            if estTipo == 0:
                 dadosMeteorologicos[5]['valor'] = round(dadosMeteorologicos[5]['valor'],1)
 
 
