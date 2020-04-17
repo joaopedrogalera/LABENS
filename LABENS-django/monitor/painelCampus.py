@@ -232,9 +232,9 @@ def painel(request,campus):
         next(reader)
         for row in reader:
             painelTemp[0]['temp'] = round(float(row[2]),1) #Monocristalino
-            painelTemp[1]['temp'] = round(float(row[6]),1) #Policristalino
-            painelTemp[2]['temp'] = round(float(row[14]),1) #CdTe
-            painelTemp[3]['temp'] = round(float(row[10]),1) #CIGS
+            painelTemp[1]['temp'] = round(float(row[3]),1) #Policristalino
+            painelTemp[2]['temp'] = round(float(row[5]),1) #CdTe
+            painelTemp[3]['temp'] = round(float(row[4]),1) #CIGS
 
         ambTimestamp['paineis'] = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
 
