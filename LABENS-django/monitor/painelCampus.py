@@ -74,12 +74,12 @@ def painel(request,campus):
     csvPrefix = paths.Ftp()+data.strftime("%Y")+'/'+data.strftime("%m")
     csvInvPrefix = csvPrefix+'/inversores/'
 
-    mono1File = csvInvPrefix+'mono/inv_3k0_'+campus.cod+'_mono_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    mono2File = csvInvPrefix+'mono/inv_3k0_'+campus.cod+'_mono_01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    poli1File = csvInvPrefix+'poli/inv_3k0_'+campus.cod+'_poli_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    poli2File = csvInvPrefix+'poli/inv_3k0_'+campus.cod+'_poli_01_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cdteFile = csvInvPrefix+'cdte/inv_1k5_'+campus.cod+'_cdte_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    cigsFile = csvInvPrefix+'cigs/inv_1k5_'+campus.cod+'_cigs_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    mono1File = csvInvPrefix+'mono/'+campus.cod.upper()+'-mon1-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    mono2File = csvInvPrefix+'mono/'+campus.cod.upper()+'-mon2-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    poli1File = csvInvPrefix+'poli/'+campus.cod.upper()+'-pol1-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    poli2File = csvInvPrefix+'poli/'+campus.cod.upper()+'-pol2-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cdteFile = csvInvPrefix+'cdte/'+campus.cod.upper()+'-cdte-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    cigsFile = csvInvPrefix+'cigs/'+campus.cod.upper()+'-cigs-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     mono1 = ProcessaCSV(mono1File)
     mono2 = ProcessaCSV(mono2File)
@@ -94,9 +94,9 @@ def painel(request,campus):
 
     csvDatPrefix = csvPrefix+'/dataloggers/'
 
-    radFile = csvDatPrefix+'rad01/dat_'+StationType.lower()+'_'+campus.cod+'_rad01_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    metFile = csvDatPrefix+'rad10/dat_'+StationType.lower()+'_'+campus.cod+'_rad10_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
-    tmpFile = csvDatPrefix+'temps/dat_'+StationType.lower()+'_'+campus.cod+'_temps_00_'+data.strftime("%Y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    radFile = csvDatPrefix+'rad01/'+campus.cod.upper()+'-'+StationType.lower()[0]+StationType.lower()[1]+'01-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    metFile = csvDatPrefix+'rad10/'+campus.cod.upper()+'-'+StationType.lower()[0]+StationType.lower()[1]+'10-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
+    tmpFile = csvDatPrefix+'temps/'+campus.cod.upper()+'-temp-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
