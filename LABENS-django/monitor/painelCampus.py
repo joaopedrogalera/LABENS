@@ -7,10 +7,9 @@ from .models import Campus
 from . import paths
 from django.http import HttpResponse
 
-def ProcessaCSV(arquivo):
+def ProcessaCSV(arquivo, data):
     retorno = {'Geracao':[],'Inst': 0, 'Erro': 0, 'Timestamp':''}
 
-    data = datetime.datetime.now()
     initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
 
     if os.path.isfile(arquivo):
@@ -68,7 +67,13 @@ def painel(request,campus):
     if estTipo == '':
         estTipo = campus.estTipo
 
-    data = datetime.datetime.now()
+    if 'data' in request.GET.keys():
+        try:
+            data = datetime.datetime.strptime(request.GET['data'],"%Y-%m-%d")
+        except:
+            data = datetime.datetime.now()
+    else:
+        data = datetime.datetime.now()
 
     #Arquivos de geração do dia
     csvPrefix = paths.Ftp()+data.strftime("%Y")+'/'+data.strftime("%m")
@@ -81,12 +86,12 @@ def painel(request,campus):
     cdteFile = csvInvPrefix+'cdte/'+campus.cod.upper()+'-cdte-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
     cigsFile = csvInvPrefix+'cigs/'+campus.cod.upper()+'-cigs-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
-    mono1 = ProcessaCSV(mono1File)
-    mono2 = ProcessaCSV(mono2File)
-    poli1 = ProcessaCSV(poli1File)
-    poli2 = ProcessaCSV(poli2File)
-    cdte = ProcessaCSV(cdteFile)
-    cigs = ProcessaCSV(cigsFile)
+    mono1 = ProcessaCSV(mono1File, data)
+    mono2 = ProcessaCSV(mono2File, data)
+    poli1 = ProcessaCSV(poli1File, data)
+    poli2 = ProcessaCSV(poli2File, data)
+    cdte = ProcessaCSV(cdteFile, data)
+    cigs = ProcessaCSV(cigsFile, data)
 
     #Dados Ambientais
     StationTypes = ['SONDA','EPE']
