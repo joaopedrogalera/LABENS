@@ -18,14 +18,14 @@
     <table class="table table-striped">
     <tr>
       <th scope="col">Arquivo</th>
-      <th scope="col">Ultima verificação (UTC)</th>
+      <th scope="col">Ultima atualização (UTC)</th>
       <th scope="col">Tempo sem atualização (s)</th>
     </tr>
     {% for tabela in campus.tabelas %}
     <tr>
       <td>{{ tabela.file }}</td>
-      <td>{{ tabela.measure_time }}</td>
       <td>{{ tabela.last_update }}</td>
+      <td{% if tabela.no_update_time.error == 1 %} style="color: #f00;"{% endif %}>{{ tabela.no_update_time.text }}</td>
     </tr>
     {% endfor %}
     </table>
