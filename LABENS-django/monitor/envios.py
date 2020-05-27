@@ -29,6 +29,7 @@ def formatNoUpdateTime(no_update_time):
 def listaEnvios(request):
     DBPath = paths.EnviosDB()+'database.db'
 
+    time = datetime.datetime.utcnow()
     conn = sqlite3.connect(DBPath)
 
     cur = conn.cursor()
@@ -43,9 +44,11 @@ def listaEnvios(request):
             curUp.execute("SELECT measure_time, last_update_in_s FROM updates WHERE file_id = :file ORDER BY id DESC LIMIT 1",{"file":file[0]})
             result = curUp.fetchone()
 
-            no_update_time = formatNoUpdateTime(result[1])
+            measure_time = datetime.datetime.strptime(result[0],'%Y-%m-%dT%H:%M:%S')
 
-            tabelas.append({"file":file[1]+"-"+file[2],"last_update":datetime.datetime.strptime(result[0],'%Y-%m-%dT%H:%M:%S') - datetime.timedelta(seconds=result[1]),"no_update_time":no_update_time})
+            no_update_time = formatNoUpdateTime((time-measure_time).seconds + result[1])
+
+            tabelas.append({"file":file[1]+"-"+file[2],"last_update":measure_time - datetime.timedelta(seconds=result[1]),"no_update_time":no_update_time})
 
         leituras.append({"campus":campus.nome,"tabelas":tabelas})
 
