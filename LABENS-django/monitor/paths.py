@@ -3,3 +3,6 @@ def Dropbox():
 
 def Ftp():
     return '/mnt/ftp/'
+
+def EnviosDB():
+    return '/'

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Campus
 from django.shortcuts import render, redirect
 import datetime
+from . import paths
 
 def formatNoUpdateTime(no_update_time):
     no_update_time_text = ''
@@ -26,7 +27,7 @@ def formatNoUpdateTime(no_update_time):
         return {'text':no_update_time_text,'error':error}
 
 def listaEnvios(request):
-    DBPath = '/home/joaopedro/UTFPR/estagios/LABENS/files_last_modification_time/database.db'
+    DBPath = paths.EnviosDB()+'database.db'
 
     conn = sqlite3.connect(DBPath)
 
