@@ -24,7 +24,7 @@ def formatNoUpdateTime(no_update_time):
             no_update_time_text = str(int(no_update_time/60))+'h '+str(no_update_time_m)+'m '+str(no_update_time_s)+'s'
             error = 1
 
-        return {'text':no_update_time_text,'error':error}
+    return {'text':no_update_time_text,'error':error}
 
 def listaEnvios(request):
     DBPath = paths.EnviosDB()+'database.db'
