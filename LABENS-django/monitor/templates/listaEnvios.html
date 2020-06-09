@@ -13,6 +13,20 @@
 <body>
   <div class="container">
     <h1>Atualização dos arquivos</h1>
+    {% if alarme %}
+    <div class="alert alert-danger">
+      <h2>Alarmes ativos</h2>
+      <p>Existem alarmes ativos que ainda não tiveram sua visualização confirmada</p>
+      <p>Clique abaixo para lima-los</p>
+      <form action="limpaAlarmes" method="post">
+        <div class="form-check">
+          <input type="checkbox" name="confirm" value="1" id="limpaAlarmeConfirm" class="form-check-input" />
+          <label for="limpaAlarmeConfirm" class="form-check-label">Confirmar limpeza dos alarmes enviados por e-mail</label>
+      </div>
+        <button type="submit" class="btn btn-outline-danger btn-sm">Limpar Alarmes</button>
+      </form>
+    </div>
+    {% endif %}
   {% for campus in leituras %}
     <h2>{{ campus.campus }}</h2>
     <table class="table table-striped">

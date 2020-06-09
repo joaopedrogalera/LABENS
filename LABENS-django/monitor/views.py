@@ -73,3 +73,12 @@ def listaEnvios(request):
         return envios.listaEnvios(request)
     else:
         return redirect('/login?'+urlencode({'redirect':'/envios'}))
+
+@csrf_exempt
+def limpaAlarmes(request):
+    sessao = request.session.get('status', 0)
+
+    if sessao:
+        return envios.limpaAlarmes(request)
+    else:
+        return redirect('/login?'+urlencode({'redirect':'/envios'}))

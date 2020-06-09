@@ -38,6 +38,8 @@ def listaEnvios(request):
     campi = Campus.objects.all()
 
     leituras = []
+    alarme = 0
+
     for campus in campi:
         tabelas = []
         for file in cur.execute("SELECT * FROM files WHERE local = :campus",{"campus": campus.cod.upper()}):
@@ -45,11 +47,34 @@ def listaEnvios(request):
             result = curUp.fetchone()
 
             measure_time = datetime.datetime.strptime(result[0],'%Y-%m-%dT%H:%M:%S')
-
-            no_update_time = formatNoUpdateTime((time-measure_time).seconds + result[1])
+            no_update_time = formatNoUpdateTime(int((time-measure_time).total_seconds() + result[1]))
 
             tabelas.append({"file":file[1]+"-"+file[2],"last_update":measure_time - datetime.timedelta(seconds=result[1]),"no_update_time":no_update_time})
 
+            if file[3] == -2:
+                alarme = 1
+
         leituras.append({"campus":campus.nome,"tabelas":tabelas})
 
-    return render(request,"listaEnvios.html",{"leituras":leituras})
+    return render(request,"listaEnvios.html",{"leituras":leituras,"alarme":alarme})
+
+def limpaAlarmes(request):
+
+    if request.method == 'GET':
+        return redirect('/envios/')
+
+    if not 'confirm' in request.POST.keys() or not request.POST['confirm'] == '1':
+        alert = '''<script>
+                    alert("Favor marcar caixa de confirmação");
+                    window.location.href = "/envios/";
+                </script>'''
+        return HttpResponse(alert)
+    else:
+        DBPath = paths.EnviosDB()+'database.db'
+
+        conn = sqlite3.connect(DBPath)
+        cur = conn.cursor()
+        cur.execute("UPDATE files SET status = -1 WHERE status = -2")
+        conn.commit()
+        conn.close()
+        return HttpResponse('<script>window.location.href = "/envios/";</script>')
