@@ -70,13 +70,15 @@ def painel(request,campus):
     if 'data' in request.GET.keys():
         try:
             data = datetime.datetime.strptime(request.GET['data'],"%Y-%m-%d")
+            csvPrefix = paths.Ftp()+'/importados/'+data.strftime("%Y")+'/'+data.strftime("%m")
         except:
             data = datetime.datetime.now()
+            csvPrefix = paths.Ftp()+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
     else:
         data = datetime.datetime.now()
+        csvPrefix = paths.Ftp()+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
 
     #Arquivos de geração do dia
-    csvPrefix = paths.Ftp()+data.strftime("%Y")+'/'+data.strftime("%m")
     csvInvPrefix = csvPrefix+'/inversores/'
 
     mono1File = csvInvPrefix+'mono/'+campus.cod.upper()+'-mon1-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
