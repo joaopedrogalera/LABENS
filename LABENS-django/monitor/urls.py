@@ -6,6 +6,7 @@ urlpatterns = [
     path('',views.index),
     path('login',views.login),
     path('painelCampus/',views.selectCampus),
+    path('painelCampus/opcoes/',views.selectCampusOpt),
     path('painelCampus/<str:campus>/',views.showPainelCampus),
     path('indicesDeMerito',views.indicesDeMerito),
     path('envios/', views.listaEnvios),

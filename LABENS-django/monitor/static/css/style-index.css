@@ -36,8 +36,16 @@ nav ul li{
   margin: 15px;
 }
 
-section form{
+nav h2{
+  font-size: 23px;
+}
+
+section form, nav form{
   margin: 15px;
+}
+
+nav form span{
+  display: block;
 }
 
 section form input{

@@ -58,6 +58,17 @@ def selectCampus(request):
 def showPainelCampus(request,campus):
     return painelCampus.painel(request,campus)
 
+def selectCampusOpt(request):
+    sessao = request.session.get('status', 0)
+
+    if sessao:
+        campi = Campus.objects.all()
+        datamax = datetime.datetime.now() - datetime.timedelta(days=1)
+        datamaxtext = datamax.strftime("%Y-%m-%d")
+        return render(request,'selecCampusOpt.html',{'campi':campi,'datamax':datamaxtext})
+    else:
+        return redirect('/login?'+urlencode({'redirect':'/painelCampus/opcoes/'}))
+
 def indicesDeMerito(request):
     sessao = request.session.get('status', 0)
 
