@@ -21,6 +21,16 @@
           document.getElementById('data').required = false;
         }
       }
+
+      function selectEst(){
+        var estacoes = { {% for campus in campi%} '{{campus.cod}}':'{{campus.estTipo}}',{% endfor %} };
+        estTipo = estacoes[document.getElementById('campus').value];
+
+        estOpt = 'est';
+        estOpt = estOpt.concat(estTipo);
+        document.getElementById(estOpt).checked = true;
+      }
+
       function acessarPagina(form){
         var url = "/painelCampus/";
         url = url.concat(form.elements['campus'].value);
@@ -32,6 +42,9 @@
           url = url.concat(form.elements['data'].value)
         }
         window.location.href = url;
+      }
+      window.onload = function(){
+        selectEst();
       }
   </script>
 </head>
@@ -46,14 +59,14 @@
         <h2>Opçoẽs avançadas</h2>
         <div class="form-group">
           <label for="campus">Selecione o campus</label>
-          <select id="campus" name="campus" class="form-control">
+          <select id="campus" name="campus" class="form-control" onchange="selectEst();">
             {% for campus in campi %}
             <option value="{{ campus.cod }}" class="form-control">{{ campus.nome }}</option>
             {% endfor %}
           </select>
         </div>
         <hr />
-        <span>Tipo de estação (Se nenhuma for selecionada, será utilizada a padrão)</span>
+        <span>Tipo de estação</span>
         <div class="form-check">
           <input type="radio" name="estacao" value="0" id="est0" class="form-check-input">
           <label for="est0" class="form-check-label">SONDA</label>
