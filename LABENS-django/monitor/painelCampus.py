@@ -70,13 +70,13 @@ def painel(request,campus):
     if 'data' in request.GET.keys():
         try:
             data = datetime.datetime.strptime(request.GET['data'],"%Y-%m-%d")
-            csvPrefix = paths.Ftp()+'/importados/'+data.strftime("%Y")+'/'+data.strftime("%m")
+            csvPrefix = paths.FTP+'/importados/'+data.strftime("%Y")+'/'+data.strftime("%m")
         except:
             data = datetime.datetime.now()
-            csvPrefix = paths.Ftp()+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
+            csvPrefix = paths.FTP+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
     else:
         data = datetime.datetime.now()
-        csvPrefix = paths.Ftp()+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
+        csvPrefix = paths.FTP+'/dados/'+data.strftime("%Y")+'/'+data.strftime("%m")
 
     #Arquivos de geração do dia
     csvInvPrefix = csvPrefix+'/inversores/'

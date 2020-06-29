@@ -1,8 +1,3 @@
-def Dropbox():
-    return '/home/labens/Dropbox/'
+FTP = '/mnt/ftp/'
 
-def Ftp():
-    return '/mnt/ftp/'
-
-def EnviosDB():
-    return '/'
+EnviosDB = '/'

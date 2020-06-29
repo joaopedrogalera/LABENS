@@ -27,7 +27,7 @@ def formatNoUpdateTime(no_update_time):
     return {'text':no_update_time_text,'error':error}
 
 def listaEnvios(request):
-    DBPath = paths.EnviosDB()+'database.db'
+    DBPath = paths.EnviosDB+'database.db'
 
     time = datetime.datetime.utcnow()
     conn = sqlite3.connect(DBPath)
@@ -70,7 +70,7 @@ def limpaAlarmes(request):
                 </script>'''
         return HttpResponse(alert)
     else:
-        DBPath = paths.EnviosDB()+'database.db'
+        DBPath = paths.EnviosDB+'database.db'
 
         conn = sqlite3.connect(DBPath)
         cur = conn.cursor()
