@@ -5,3 +5,5 @@ from . import models
 
 admin.site.register(models.Campus)
 admin.site.register(models.FaixasIP)
+admin.site.register(models.InvConfig)
+admin.site.register(models.InvConfigTokens)
