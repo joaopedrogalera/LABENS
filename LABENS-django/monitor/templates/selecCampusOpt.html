@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'css/style-index.css' %}" />
   <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png" />
+  <script src="{% static 'js/modernizr-inputtypes.js' %}" type="text/javascript"></script>
   <script type="text/javascript">
       function enableData(radio){
         if (radio.checked){
@@ -45,6 +46,18 @@
       }
       window.onload = function(){
         selectEst();
+
+        if(!Modernizr.inputtypes.date){
+          alert("Seu navegador não é totalmente compatível com o padrão html5. Alguns recursos podem não funcionar corretamente");
+          var noInputDataMsg = document.createElement('span');
+          noInputDataMsg.style = "color: #f00;";
+
+          var noInputDataText = document.createTextNode("Seu navegador não é compatível com o campo de data. A data deve ser inserida manualmente no formato aaaa-mm-dd");
+          noInputDataMsg.appendChild(noInputDataText);
+
+          var dataInput = document.getElementById("data");
+          dataInput.parentNode.insertBefore(noInputDataMsg,dataInput);
+        }
       }
   </script>
 </head>
