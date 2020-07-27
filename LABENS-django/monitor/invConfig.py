@@ -30,7 +30,7 @@ def getInvConfig(request):
                     'fp':inverter.fp,
                     'fp_type':inverter.get_fpTipo_display(),
                     'power_limit':inverter.limPot,
-                    'update_time':inverter.UpdateTime,
+                    'update_time':inverter.UpdateTime.strftime("%Y-%m-%d %H:%M:%S"),
                     'status':inverter.get_UpdateStatus_display()
         })
     return JsonResponse(jsonReturn,safe=False)
