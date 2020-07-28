@@ -22,17 +22,23 @@ def getInvConfig(request):
         return JsonResponse({'Error':'No inverters found'},status=404)
 
     for inverter in inverters:
-        jsonReturn.append({
+        invParam = dict()
+        invParam = {
                     'campus':inverter.campus.nome,
                     'campus_cod':inverter.campus.cod,
                     'inv_name':inverter.nome,
                     'inv_description':inverter.descri,
                     'fp':inverter.fp,
-                    'fp_type':inverter.get_fpTipo_display(),
                     'power_limit':inverter.limPot,
                     'update_time':inverter.UpdateTime.strftime("%Y-%m-%d %H:%M:%S"),
                     'status':inverter.get_UpdateStatus_display()
-        })
+                    }
+
+        if not inverter.fp == 1.0:
+            invParam['fp_type'] = inverter.get_fpTipo_display()
+
+        jsonReturn.append(invParam)
+
     return JsonResponse(jsonReturn,safe=False)
 
 @csrf_exempt
@@ -48,8 +54,11 @@ def updateInvConfig(request):
         if not type(content) is dict:
             return HttpResponse("Invalid json format. The format must be dict", status=400)
 
-        if not 'campus' in content.keys() or content['campus'] == "" or not 'inv' in content.keys() or content['inv'] == "" or not 'fp' in content.keys() or content['fp'] == "" or not 'fp_type' in content.keys() or content['fp_type'] == "" or not 'power_limit' in content.keys() or content['power_limit'] == "":
-            return HttpResponse("Missing Parameters. 'campus', 'inv', 'fp', 'fp_type' and 'power_limit' must be present", status=400)
+        if not 'campus' in content.keys() or content['campus'] == "" or not 'inv' in content.keys() or content['inv'] == "" or not 'fp' in content.keys() or content['fp'] == "" or not 'power_limit' in content.keys() or content['power_limit'] == "":
+            return HttpResponse("Missing Parameters. 'campus', 'inv', 'fp', and 'power_limit' must be present", status=400)
+
+        if not content['fp'] == 1.0 and (not 'fp_type' in content.keys() or content['fp_type'] == ""):
+            return HttpResponse("Missing Parameters. 'fp_type' must be present when fp!=1.0", status=400)
 
         token = InvConfigTokens.objects.filter(token=request.headers['labens-token']).filter(inverters__campus__cod=content["campus"]).filter(inverters__nome=content["inv"])
 
@@ -63,11 +72,11 @@ def updateInvConfig(request):
         inv.limPot = content['power_limit']
         inv.UpdateStatus = "A"
 
-        if content['fp_type'] == "Delay":
+        if not content['fp'] == 1.0 and content['fp_type'] == "Delay":
             inv.fpTipo = "D"
-        elif content['fp_type'] == "Advance":
+        elif not content['fp'] == 1.0 and content['fp_type'] == "Advance":
             inv.fpTipo = "A"
-        else:
+        elif not content['fp'] == 1.0:
             return HttpResponse("Invalid fp_type",status=400)
 
         inv.save()
