@@ -12,9 +12,9 @@ def getInvConfig(request):
     elif 'campus' in request.GET.keys() and not request.GET['campus'] == "":
 
         if 'inv' in request.GET.keys() and not request.GET['inv'] == "":
-            inverters = InvConfig.objects.filter(campus__cod=request.GET['campus']).filter(nome=request.GET['inv'])
+            inverters = InvConfig.objects.filter(campus=request.GET['campus']).filter(nome=request.GET['inv'])
         else:
-            inverters = InvConfig.objects.filter(campus__cod=request.GET['campus'])
+            inverters = InvConfig.objects.filter(campus=request.GET['campus'])
     else:
         return JsonResponse({'Error':'Missing Query Parameters'},status=400)
 
@@ -24,8 +24,7 @@ def getInvConfig(request):
     for inverter in inverters:
         invParam = dict()
         invParam = {
-                    'campus':inverter.campus.nome,
-                    'campus_cod':inverter.campus.cod,
+                    'campus_cod':inverter.campus,
                     'inv_name':inverter.nome,
                     'inv_description':inverter.descri,
                     'fp':inverter.fp,
@@ -60,12 +59,12 @@ def updateInvConfig(request):
         if not content['fp'] == 1.0 and (not 'fp_type' in content.keys() or content['fp_type'] == ""):
             return HttpResponse("Missing Parameters. 'fp_type' must be present when fp!=1.0", status=400)
 
-        token = InvConfigTokens.objects.filter(token=request.headers['labens-token']).filter(inverters__campus__cod=content["campus"]).filter(inverters__nome=content["inv"])
+        token = InvConfigTokens.objects.filter(token=request.headers['labens-token']).filter(inverters__campus=content["campus"]).filter(inverters__nome=content["inv"])
 
         if not token:
             return HttpResponse("Unauthorized", status=401)
 
-        inverter = InvConfig.objects.filter(campus__cod=content['campus']).filter(nome=content['inv'])
+        inverter = InvConfig.objects.filter(campus=content['campus']).filter(nome=content['inv'])
         inv = inverter[0]
 
         inv.fp = content['fp']
