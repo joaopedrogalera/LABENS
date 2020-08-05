@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class InvConfig(models.Model):
-    fpTipoOpts = (('D','Delay'),('A','Advance'))
+    fpTipoOpts = (('D','Inductive'),('A','Capacitive'))
     StatusOpts = (('A','Applied'),('U','Updated'))
     campus = models.CharField(max_length=2)
     nome = models.CharField(max_length=4)
