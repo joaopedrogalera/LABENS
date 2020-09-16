@@ -4,10 +4,10 @@ from django.utils.http import urlencode
 from . import painelCampus
 from . import envios
 from .models import Campus
-from .models import FaixasIP
 from django.views.decorators.csrf import csrf_exempt
 import datetime
-import ipaddress
+import psycopg2
+import bcrypt
 # Create your views here.
 
 def index(request):
@@ -21,27 +21,20 @@ def login(request):
         if 'redirect' in request.GET:
             redir = request.GET['redirect']
 
-        #Pula exigencia de senha se o acesso vier da rede da UT.
-        faixas = FaixasIP.objects.all()
-        ip = ipaddress.ip_address(request.META['REMOTE_ADDR'])
-        lib = 0
-        for faixa in faixas:
-            if ip in ipaddress.ip_network(faixa.pref):
-                lib = 1
-
-        if lib:
-            request.session['status'] = 1
-            if not redir == '':
-                return redirect(redir)
-            else:
-                return redirect('/')
-
         return render(request,'login.html',{'redirect':redir,'loginErr':0})
     else:
-        if not 'redirect' in request.POST or not 'passwd' in request.POST:
+        if not 'redirect' in request.POST or not 'user' in request.POST or request.POST['user'] == '' or not 'passwd' in request.POST or request.POST['passwd'] == '':
             return redirect('/login')
 
-        if request.POST['passwd'] == 'Senha Aqui':
+        dbcon = psycopg2.connect(host='',user='',password='',database='')
+        cur = dbcon.cursor()
+        cur.execute("SELECT password FROM usuarios, roles WHERE usuarios.id_grupo = roles.id AND roles.name IN ('admin','manager') AND usuarios.ativo = 't' AND usuarios.id_login_cpf = %s;",(request.POST['user'],))
+        passwd = cur.fetchone()
+
+        if passwd == None:
+            return render(request,'login.html',{'redirect':request.POST['redirect'],'loginErr':1})
+
+        if bcrypt.checkpw(request.POST['passwd'].encode('utf-8'),passwd[0].encode('utf-8')):
                 request.session['status'] = 1
         else:
             return render(request,'login.html',{'redirect':request.POST['redirect'],'loginErr':1})
