@@ -21,18 +21,21 @@ def ProcessaCSV(arquivo, data):
         try:
             next(reader)
         except:
-            retorno['Erro'] = 1
-            return retorno
+            status = '2'
 
         for row in reader:
-            entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
+            try:
+                entrydate = datetime.datetime.strptime(row[0].split('.')[0],'%Y-%m-%dT%H:%M:%S')
+            except:
+                continue
+
             if entrydate >= initialTime:
                 #Os dados corrompidos vem de duas formas, com a linha incompleta ou com o campo vazio. Em abos os casos, repete a entrada anterior
                 if len(row)>=11:
                     retorno['Inst'] = row[6]
-                    status = row[10]
+                    status = row[12]
                 else:
-                    status = 2
+                    status = '2'
 
                 if retorno['Inst'] == '':
                     retorno['Inst'] = retorno['Geracao'][len(retorno['Geracao'])-1]
