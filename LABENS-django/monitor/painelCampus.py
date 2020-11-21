@@ -33,7 +33,10 @@ def ProcessaCSV(arquivo, data):
                 #Os dados corrompidos vem de duas formas, com a linha incompleta ou com o campo vazio. Em abos os casos, repete a entrada anterior
                 if len(row)>=11:
                     retorno['Inst'] = row[6]
-                    status = row[12]
+                    try:
+                        status = row[12]
+                    except:
+                        pass
                 else:
                     status = '2'
 
