@@ -58,6 +58,10 @@
           var dataInput = document.getElementById("data");
           dataInput.parentNode.insertBefore(noInputDataMsg,dataInput);
         }
+        //Garantindo que o campo de data esteja ativo ao clicar em voltar e a opção de data anterior esteja selecionada
+        if(document.getElementById('dataoptant').checked){
+          enableData(document.getElementById('dataoptant'));
+        }
       }
   </script>
 </head>
