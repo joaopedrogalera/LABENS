@@ -112,8 +112,9 @@ def painel(request,campus):
     tmpFile = csvDatPrefix+'temps/'+campus.cod.upper()+'-temp-'+data.strftime("%y")+'-'+data.strftime("%m")+'-'+data.strftime("%d")+'.csv'
 
     #Leva a data para a meia noite do dia atual para comparar com o tempo dos arquivos do ftp
-    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d') + datetime.timedelta(hours=3)
-    finalTime = initialTime + datetime.timedelta(days=1)
+    initialTime = datetime.datetime.strptime(data.strftime('%Y%m%d'),'%Y%m%d')
+    initialTimeLocal = initialTime + datetime.timedelta(hours=3)
+    finalTime = initialTimeLocal + datetime.timedelta(days=1)
 
     #Inicializa variaveis que serão renderizadas na página
     irradianciaGraf = {'Global':[],'Inclinado':[]}
@@ -159,7 +160,7 @@ def painel(request,campus):
         for row in reader:
             #Vê a data da entrada e só pega as do dia
             entrydate = datetime.datetime.strptime(row[1],'%Y-%m-%dT%H:%M:%SZ')
-            if entrydate >= initialTime and entrydate <= finalTime:
+            if entrydate >= initialTimeLocal and entrydate <= finalTime:
                 if estTipo == 0: #Se for SONDA
                     #As vezes a linha vem com um NAN e trava o gráfico. Tratando isto
                     if row[2] != 'NAN':
