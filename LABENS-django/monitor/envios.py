@@ -56,6 +56,8 @@ def listaEnvios(request):
 
         leituras.append({"campus":campus.nome,"tabelas":tabelas})
 
+    conn.close()
+
     return render(request,"listaEnvios.html",{"leituras":leituras,"alarme":alarme})
 
 def limpaAlarmes(request):
