@@ -14,7 +14,6 @@ def index(request):
     return redirect('/painelCampus')
     #return render(request,'index.html')
 
-@csrf_exempt
 def login(request):
     if request.method == 'GET':
         redir = ''
@@ -30,6 +29,7 @@ def login(request):
         cur = dbcon.cursor()
         cur.execute("SELECT password FROM usuarios, roles WHERE usuarios.id_grupo = roles.id AND roles.name IN ('admin','manager') AND usuarios.ativo = 't' AND usuarios.id_login_cpf = %s;",(request.POST['user'],))
         passwd = cur.fetchone()
+        dbcon.close()
 
         if passwd == None:
             return render(request,'login.html',{'redirect':request.POST['redirect'],'loginErr':1})
